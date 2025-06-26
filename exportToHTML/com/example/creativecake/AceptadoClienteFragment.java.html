@@ -1,0 +1,465 @@
+<html>
+<head>
+<title>AceptadoClienteFragment.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #808080;}
+.s3 { color: #6897bb;}
+.s4 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+AceptadoClienteFragment.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.creativecake</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.content.ActivityNotFoundException</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.ClipData</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.Context</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.Intent</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.graphics.Canvas</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.graphics.Paint</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.graphics.pdf.PdfDocument</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.net.Uri</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.AsyncTask</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Build</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.annotation.NonNull</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.annotation.Nullable</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.annotation.RequiresApi</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.fragment.app.Fragment</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.navigation.NavController</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.navigation.Navigation</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.os.Environment</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.FileUriExposedException</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.LayoutInflater</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.ViewGroup</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Button</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ProgressBar</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.TextView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Toast</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.google.android.gms.tasks.OnFailureListener</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.android.gms.tasks.OnSuccessListener</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DataSnapshot</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DatabaseError</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DatabaseReference</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.FirebaseDatabase</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.Query</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.ValueEventListener</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.io.File</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.io.FileOutputStream</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.io.IOException</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.time.LocalDate</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.time.LocalTime</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.ArrayList</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.LinkedList</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.List</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.concurrent.CountDownLatch</span><span class="s0">;</span>
+
+
+<span class="s0">public class </span><span class="s1">AceptadoClienteFragment </span><span class="s0">extends </span><span class="s1">Fragment {</span>
+    <span class="s0">private </span><span class="s1">Button botonFactura</span><span class="s0">, </span><span class="s1">botonFin</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">NavController navController</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">Context globalContext</span><span class="s0">;</span>
+    <span class="s1">String telefono</span><span class="s0">;</span>
+    <span class="s1">File folder</span><span class="s0">;</span>
+    <span class="s1">DatabaseReference pago</span><span class="s0">,</span><span class="s1">domicilios</span><span class="s0">, </span><span class="s1">ventas</span><span class="s0">, </span><span class="s1">carrito</span><span class="s0">;</span>
+    <span class="s1">List&lt;ItemHelperClass&gt; listadoCompras</span><span class="s0">;</span>
+    <span class="s1">ArrayList&lt;ItemHelperClass&gt; listadoFactura</span><span class="s0">;</span>
+    <span class="s1">CountDownLatch count</span><span class="s0">;</span>
+    <span class="s1">Boolean n</span><span class="s0">, </span><span class="s1">f</span><span class="s0">;</span>
+    <span class="s1">TextView ITEM</span><span class="s0">;</span>
+    <span class="s0">int </span><span class="s1">i</span><span class="s0">;</span>
+    <span class="s1">ProgressBar progressBar</span><span class="s0">;</span>
+    <span class="s1">View v</span><span class="s0">;</span>
+    <span class="s0">int </span><span class="s1">subTotal</span><span class="s0">, </span><span class="s1">descuento</span><span class="s0">, </span><span class="s1">comision</span><span class="s0">, </span><span class="s1">total</span><span class="s0">;</span>
+
+    <span class="s0">public </span><span class="s1">AceptadoClienteFragment() {</span>
+        <span class="s2">// Required empty public constructor</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public static </span><span class="s1">AceptadoClienteFragment newInstance(String param1</span><span class="s0">, </span><span class="s1">String param2) {</span>
+        <span class="s1">AceptadoClienteFragment fragment = </span><span class="s0">new </span><span class="s1">AceptadoClienteFragment()</span><span class="s0">;</span>
+        <span class="s1">Bundle args = </span><span class="s0">new </span><span class="s1">Bundle()</span><span class="s0">;</span>
+        <span class="s1">fragment.setArguments(args)</span><span class="s0">;</span>
+        <span class="s0">return </span><span class="s1">fragment</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onCreate(Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onCreate(savedInstanceState)</span><span class="s0">;</span>
+        <span class="s0">if </span><span class="s1">(getArguments() != </span><span class="s0">null</span><span class="s1">) {</span>
+        <span class="s1">}</span>
+        <span class="s1">globalContext=</span><span class="s0">this</span><span class="s1">.getActivity()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">View onCreateView(LayoutInflater inflater</span><span class="s0">, </span><span class="s1">ViewGroup container</span><span class="s0">,</span>
+                             <span class="s1">Bundle savedInstanceState) {</span>
+        <span class="s2">// Inflate the layout for this fragment</span>
+        <span class="s1">View view = inflater.inflate(R.layout.fragment_aceptado_cliente</span><span class="s0">, </span><span class="s1">container</span><span class="s0">, false</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s0">return </span><span class="s1">view</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onViewCreated(@NonNull View view</span><span class="s0">, </span><span class="s1">@Nullable Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onViewCreated(view</span><span class="s0">, </span><span class="s1">savedInstanceState)</span><span class="s0">;</span>
+        <span class="s1">v = view</span><span class="s0">;</span>
+
+        <span class="s1">telefono = SharedPreferences_Util.getPhone_SP(globalContext)</span><span class="s0">;</span>
+        <span class="s1">listadoFactura= </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span>
+
+        <span class="s1">botonFactura = (Button)view.findViewById(R.id.descargar_factura)</span><span class="s0">;</span>
+        <span class="s1">botonFin = (Button)view.findViewById(R.id.btn_fin)</span><span class="s0">;</span>
+        <span class="s1">progressBar =(ProgressBar) view.findViewById(R.id.progressBar2)</span><span class="s0">;</span>
+        <span class="s1">f=</span><span class="s0">false;</span>
+        <span class="s1">traerFactura()</span><span class="s0">;</span>
+
+        <span class="s1">botonFactura.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                <span class="s1">generarPDF()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">botonFin.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                <span class="s0">try </span><span class="s1">{</span>
+                    <span class="s1">Thread.sleep(</span><span class="s3">2000</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">} </span><span class="s0">catch </span><span class="s1">(InterruptedException e) {</span>
+                    <span class="s1">e.printStackTrace()</span><span class="s0">;</span>
+                <span class="s1">}</span>
+                <span class="s0">if</span><span class="s1">(f){</span>
+                    <span class="s1">Reordenar verificar = </span><span class="s0">new </span><span class="s1">Reordenar()</span><span class="s0">;</span>
+                    <span class="s1">verificar.execute()</span><span class="s0">;</span>
+                <span class="s1">}</span>
+                <span class="s0">else</span><span class="s1">{</span>
+                    <span class="s1">Toast.makeText(globalContext</span><span class="s0">, </span><span class="s4">&quot;Error. Oprime de nuevo FIN.&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                <span class="s1">}</span>
+
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">generarPDF() {</span>
+
+        <span class="s1">folder = </span><span class="s0">new </span><span class="s1">File(Environment.getExternalStorageDirectory().toString()</span><span class="s0">,</span><span class="s4">&quot;Facturas Creative Cake&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s0">if</span><span class="s1">(!folder.exists()){</span>
+            <span class="s1">folder.mkdirs()</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s1">DatabaseReference reference = FirebaseDatabase.getInstance().getReference(</span><span class="s4">&quot;usuarioCliente&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">Query checkUsuario = reference.orderByChild(</span><span class="s4">&quot;telefono&quot;</span><span class="s1">).equalTo(SharedPreferences_Util.getPhone_SP(getActivity()))</span><span class="s0">;</span>
+        <span class="s1">checkUsuario.addListenerForSingleValueEvent(</span><span class="s0">new </span><span class="s1">ValueEventListener() {</span>
+            <span class="s1">@RequiresApi(api = Build.VERSION_CODES.N)</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onDataChange(@NonNull DataSnapshot snapshot) {</span>
+                <span class="s1">String nombre = snapshot.child(SharedPreferences_Util.getPhone_SP(getActivity())).child(</span><span class="s4">&quot;nombre&quot;</span><span class="s1">).getValue(String.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">String telefono = snapshot.child(SharedPreferences_Util.getPhone_SP(getActivity())).child(</span><span class="s4">&quot;telefono&quot;</span><span class="s1">).getValue(String.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">String direccion = snapshot.child(SharedPreferences_Util.getPhone_SP(getActivity())).child(</span><span class="s4">&quot;direccion&quot;</span><span class="s1">).getValue(String.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+
+                <span class="s1">PdfDocument factura = </span><span class="s0">new </span><span class="s1">PdfDocument()</span><span class="s0">;</span>
+                <span class="s1">PdfDocument.PageInfo facturaInfo = </span><span class="s0">new </span><span class="s1">PdfDocument.PageInfo.Builder(</span><span class="s3">350</span><span class="s0">, </span><span class="s3">285</span><span class="s0">, </span><span class="s3">1</span><span class="s1">).create()</span><span class="s0">;</span>
+                <span class="s1">Paint paint = </span><span class="s0">new </span><span class="s1">Paint()</span><span class="s0">;</span>
+                <span class="s1">PdfDocument.Page paginaPDF = factura.startPage(facturaInfo)</span><span class="s0">;</span>
+                <span class="s1">Canvas canvas = paginaPDF.getCanvas()</span><span class="s0">;</span>
+
+                <span class="s1">paint.setTextAlign(Paint.Align.CENTER)</span><span class="s0">;</span>
+
+                <span class="s1">canvas.drawText(</span><span class="s4">&quot;CREATIVE CAKE&quot;</span><span class="s0">, </span><span class="s1">canvas.getWidth()/</span><span class="s3">2</span><span class="s0">, </span><span class="s3">15</span><span class="s0">, </span><span class="s1">paint)</span><span class="s0">;</span>
+                <span class="s1">canvas.drawText(</span><span class="s4">&quot;&quot;</span><span class="s0">,</span><span class="s1">canvas.getWidth()/</span><span class="s3">2</span><span class="s0">, </span><span class="s3">20</span><span class="s0">, </span><span class="s1">paint)</span><span class="s0">;</span>
+
+                <span class="s1">paint.setTextSize(</span><span class="s3">8.5f</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">paint.setTextAlign(Paint.Align.LEFT)</span><span class="s0">;</span>
+
+                <span class="s1">canvas.drawText(</span><span class="s4">&quot;Nombre: &quot;</span><span class="s1">+nombre</span><span class="s0">, </span><span class="s3">20</span><span class="s0">, </span><span class="s3">30</span><span class="s0">, </span><span class="s1">paint)</span><span class="s0">;</span>
+                <span class="s1">canvas.drawText(</span><span class="s4">&quot;Telefono: &quot;</span><span class="s1">+telefono</span><span class="s0">, </span><span class="s3">20</span><span class="s0">, </span><span class="s3">50</span><span class="s0">, </span><span class="s1">paint)</span><span class="s0">;</span>
+                <span class="s1">canvas.drawText(</span><span class="s4">&quot;Direccion: &quot;</span><span class="s1">+direccion</span><span class="s0">,</span><span class="s3">20</span><span class="s0">,</span><span class="s3">70</span><span class="s0">, </span><span class="s1">paint)</span><span class="s0">;</span>
+                <span class="s1">canvas.drawLine(</span><span class="s3">10</span><span class="s0">,</span><span class="s3">80</span><span class="s0">,</span><span class="s3">340</span><span class="s0">,</span><span class="s3">80</span><span class="s0">,</span><span class="s1">paint)</span><span class="s0">;</span>
+
+                <span class="s0">int </span><span class="s1">distanciay=</span><span class="s3">100</span><span class="s0">;</span>
+
+                <span class="s0">for</span><span class="s1">(ItemHelperClass producto: listadoFactura){</span>
+                    <span class="s1">canvas.drawText(producto.getProducto()+</span><span class="s4">&quot; | &quot;</span><span class="s1">+producto.getCantidad()+</span><span class="s4">&quot; | $&quot;</span><span class="s1">+producto.getPrecio()+</span><span class="s4">&quot; c/u | Pastelería &quot;</span><span class="s1">+producto.getTienda()+</span><span class="s4">&quot; | -&quot;</span><span class="s1">+producto.getOferta()+</span><span class="s4">&quot; %&quot;</span><span class="s0">,</span><span class="s3">20</span><span class="s0">,</span><span class="s1">distanciay</span><span class="s0">, </span><span class="s1">paint)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+
+                <span class="s1">distanciay=distanciay+</span><span class="s3">20</span><span class="s0">;</span>
+                <span class="s1">canvas.drawLine(</span><span class="s3">10</span><span class="s0">, </span><span class="s1">distanciay</span><span class="s0">,</span><span class="s3">340</span><span class="s0">,</span><span class="s1">distanciay</span><span class="s0">,</span><span class="s1">paint)</span><span class="s0">;</span>
+                <span class="s1">distanciay=distanciay+</span><span class="s3">20</span><span class="s0">;</span>
+
+                <span class="s1">canvas.drawText(</span><span class="s4">&quot;Subtotal: &quot;</span><span class="s1">+subTotal</span><span class="s0">,</span><span class="s3">20</span><span class="s0">,</span><span class="s1">distanciay</span><span class="s0">, </span><span class="s1">paint)</span><span class="s0">;</span>
+                <span class="s1">distanciay=distanciay+</span><span class="s3">20</span><span class="s0">;</span>
+
+                <span class="s1">canvas.drawText(</span><span class="s4">&quot;Descuento: &quot;</span><span class="s1">+descuento</span><span class="s0">,</span><span class="s3">20</span><span class="s0">,</span><span class="s1">distanciay</span><span class="s0">, </span><span class="s1">paint)</span><span class="s0">;</span>
+                <span class="s1">distanciay=distanciay+</span><span class="s3">20</span><span class="s0">;</span>
+
+                <span class="s1">canvas.drawText(</span><span class="s4">&quot;Comision: &quot;</span><span class="s1">+comision</span><span class="s0">,</span><span class="s3">20</span><span class="s0">,</span><span class="s1">distanciay</span><span class="s0">, </span><span class="s1">paint)</span><span class="s0">;</span>
+                <span class="s1">distanciay=distanciay+</span><span class="s3">20</span><span class="s0">;</span>
+
+                <span class="s1">canvas.drawText(</span><span class="s4">&quot;Total + IVA: &quot;</span><span class="s1">+total</span><span class="s0">,</span><span class="s3">20</span><span class="s0">,</span><span class="s1">distanciay</span><span class="s0">, </span><span class="s1">paint)</span><span class="s0">;</span>
+                <span class="s1">distanciay=distanciay+</span><span class="s3">20</span><span class="s0">;</span>
+
+                <span class="s1">canvas.drawLine(</span><span class="s3">10</span><span class="s0">,</span><span class="s1">distanciay</span><span class="s0">,</span><span class="s3">340</span><span class="s0">,</span><span class="s1">distanciay</span><span class="s0">,</span><span class="s1">paint)</span><span class="s0">;</span>
+                <span class="s1">distanciay = distanciay+</span><span class="s3">20</span><span class="s0">;</span>
+
+                <span class="s1">paint.setTextAlign(Paint.Align.CENTER)</span><span class="s0">;</span>
+                <span class="s1">canvas.drawText(</span><span class="s4">&quot;¡Gracias por elegirnos!&quot;</span><span class="s0">,</span><span class="s1">canvas.getWidth()/</span><span class="s3">2</span><span class="s0">,</span><span class="s1">distanciay</span><span class="s0">,</span><span class="s1">paint)</span><span class="s0">;</span>
+                <span class="s1">distanciay= distanciay+</span><span class="s3">10</span><span class="s0">;</span>
+                <span class="s1">paint.setTextAlign(Paint.Align.LEFT)</span><span class="s0">;</span>
+                <span class="s1">paint.setTextSize(</span><span class="s3">5.5f</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">canvas.drawText(</span><span class="s4">&quot;El equipo de CreativeCake&quot;</span><span class="s0">, </span><span class="s3">275</span><span class="s0">, </span><span class="s1">canvas.getHeight()-</span><span class="s3">10</span><span class="s0">, </span><span class="s1">paint)</span><span class="s0">;</span>
+
+                <span class="s1">factura.finishPage(paginaPDF)</span><span class="s0">;</span>
+                <span class="s1">File file = </span><span class="s0">new </span><span class="s1">File(getContext().getExternalFilesDir(</span><span class="s4">&quot;../Facturas&quot;</span><span class="s1">)</span><span class="s0">, </span><span class="s4">&quot;Factura &quot; </span><span class="s1">+ nombre + </span><span class="s4">&quot;.pdf&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s0">try </span><span class="s1">{</span>
+                    <span class="s1">factura.writeTo(</span><span class="s0">new </span><span class="s1">FileOutputStream(file))</span><span class="s0">;</span>
+                    <span class="s1">Toast.makeText(getActivity()</span><span class="s0">, </span><span class="s4">&quot;Factura generada&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                <span class="s1">} </span><span class="s0">catch </span><span class="s1">(IOException e) {</span>
+                    <span class="s1">e.printStackTrace()</span><span class="s0">;</span>
+                <span class="s1">}</span>
+
+                <span class="s1">factura.close()</span><span class="s0">;</span>
+                    <span class="s2">//abrirPDF(nombre);</span>
+            <span class="s1">}</span>
+
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onCancelled(@NonNull DatabaseError error) {</span>
+
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@RequiresApi(api = Build.VERSION_CODES.N)</span>
+    <span class="s0">private void </span><span class="s1">abrirPDF(String nombre) </span><span class="s0">throws </span><span class="s1">FileUriExposedException {</span>
+        <span class="s1">File pdfcreado = </span><span class="s0">new </span><span class="s1">File(getContext().getExternalFilesDir(</span><span class="s4">&quot;../Facturas&quot;</span><span class="s1">)</span><span class="s0">,</span><span class="s4">&quot;Factura &quot; </span><span class="s1">+ nombre + </span><span class="s4">&quot;.pdf&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s0">try</span>
+            <span class="s1">{</span>
+                <span class="s1">Intent intent = </span><span class="s0">new </span><span class="s1">Intent(Intent.ACTION_VIEW)</span><span class="s0">;</span>
+                <span class="s1">Uri uri = Uri.fromFile(pdfcreado)</span><span class="s0">;</span>
+                <span class="s1">intent.setDataAndType(uri</span><span class="s0">, </span><span class="s4">&quot;application/pdf&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)</span><span class="s0">;</span>
+                <span class="s1">startActivity(intent)</span><span class="s0">;</span>
+            <span class="s1">}</span><span class="s0">catch </span><span class="s1">(ActivityNotFoundException e)</span>
+            <span class="s1">{</span>
+                <span class="s1">Toast.makeText(getActivity()</span><span class="s0">,</span><span class="s4">&quot;No hay aplicación de leer PDFs&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">traerFactura(){</span>
+        <span class="s1">System.out.println(telefono)</span><span class="s0">;</span>
+        <span class="s1">carrito = FirebaseDatabase.getInstance().getReference().child(</span><span class="s4">&quot;carrito&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">carrito.child(telefono).addListenerForSingleValueEvent(</span><span class="s0">new </span><span class="s1">ValueEventListener() {</span>
+            <span class="s1">@RequiresApi(api = Build.VERSION_CODES.O)</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onDataChange(@NonNull DataSnapshot snapshot) {</span>
+                <span class="s1">listadoFactura.removeAll(listadoFactura)</span><span class="s0">;</span>
+                <span class="s0">for</span><span class="s1">(DataSnapshot snap: snapshot.getChildren()){</span>
+                    <span class="s0">if </span><span class="s1">(!snap.getValue().equals(</span><span class="s4">&quot; &quot;</span><span class="s1">)){</span>
+                        <span class="s1">ItemHelperClass producto = snap.getValue(ItemHelperClass.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s0">if</span><span class="s1">(producto.getFecha().equals(</span><span class="s4">&quot; &quot;</span><span class="s1">)){</span>
+                            <span class="s0">if</span><span class="s1">(producto.getHora().equals(</span><span class="s4">&quot; &quot;</span><span class="s1">)){</span>
+                                <span class="s1">producto.setFecha(LocalDate.now().toString())</span><span class="s0">;</span>
+                                <span class="s1">producto.setHora(LocalTime.now().toString())</span><span class="s0">;</span>
+                                <span class="s1">listadoFactura.add(producto)</span><span class="s0">;</span>
+                            <span class="s1">}</span>
+                        <span class="s1">}</span>
+                        <span class="s0">else</span><span class="s1">{</span>
+                            <span class="s1">listadoFactura.add(producto)</span><span class="s0">;</span>
+                        <span class="s1">}</span>
+                    <span class="s1">}</span>
+                    <span class="s0">else</span><span class="s1">{</span>
+                        <span class="s1">f=</span><span class="s0">true;</span>
+                        <span class="s0">break;</span><span class="s1">}</span>
+                <span class="s1">}</span>
+                <span class="s1">f=</span><span class="s0">true;</span>
+                <span class="s1">Comprar()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onCancelled(@NonNull DatabaseError error) {</span>
+
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">Comprar(){</span>
+        <span class="s1">subTotal = </span><span class="s3">0</span><span class="s0">;</span>
+        <span class="s1">descuento = </span><span class="s3">0</span><span class="s0">;</span>
+        <span class="s1">comision = </span><span class="s3">0</span><span class="s0">;</span>
+        <span class="s1">total=</span><span class="s3">0</span><span class="s0">;</span>
+
+        <span class="s0">for </span><span class="s1">(ItemHelperClass producto:listadoFactura) {</span>
+            <span class="s0">if</span><span class="s1">((producto.getOferta()==</span><span class="s4">&quot; &quot;</span><span class="s1">) || (producto.getOferta()==</span><span class="s4">&quot;0&quot;</span><span class="s1">)){</span>
+                <span class="s0">if</span><span class="s1">(producto.getCantidad()==</span><span class="s4">&quot;1&quot;</span><span class="s1">){</span>
+                    <span class="s0">try</span><span class="s1">{</span>
+                        <span class="s1">subTotal = subTotal + Integer.parseInt(producto.getPrecio())</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+                    <span class="s0">catch </span><span class="s1">(Exception e){</span>
+                        <span class="s1">Toast.makeText(globalContext</span><span class="s0">, </span><span class="s4">&quot;Fin del listado de productos en el carrito&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                        <span class="s0">break;</span>
+                    <span class="s1">}</span>
+                <span class="s1">}</span>
+                <span class="s0">else</span><span class="s1">{</span>
+                    <span class="s0">try</span><span class="s1">{</span>
+                        <span class="s0">int </span><span class="s1">items = Integer.parseInt(producto.getCantidad())</span><span class="s0">;</span>
+                        <span class="s1">subTotal = subTotal + (Integer.parseInt(producto.getPrecio())*items)</span><span class="s0">;</span>
+                    <span class="s1">}</span><span class="s0">catch </span><span class="s1">(Exception e){</span>
+                        <span class="s1">Toast.makeText(globalContext</span><span class="s0">, </span><span class="s4">&quot;Fin del listado de productos en el carrito&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                        <span class="s0">break;</span>
+                    <span class="s1">}</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span><span class="s0">else</span><span class="s1">{</span>
+                <span class="s0">if</span><span class="s1">(producto.getCantidad()==</span><span class="s4">&quot;1&quot;</span><span class="s1">){</span>
+                    <span class="s0">try</span><span class="s1">{</span>
+                        <span class="s0">int </span><span class="s1">desc = ((Integer.parseInt(producto.getPrecio())*Integer.parseInt(producto.getOferta()))/</span><span class="s3">100</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">subTotal = subTotal + (Integer.parseInt(producto.getPrecio())-desc)</span><span class="s0">;</span>
+                        <span class="s1">descuento = descuento + desc</span><span class="s0">;</span>
+                    <span class="s1">} </span><span class="s0">catch </span><span class="s1">(Exception e){</span>
+                        <span class="s1">Toast.makeText(globalContext</span><span class="s0">, </span><span class="s4">&quot;Fin del listado de productos en el carrito&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                        <span class="s0">break;</span>
+                    <span class="s1">}</span>
+                <span class="s1">}</span>
+                <span class="s0">else</span><span class="s1">{</span>
+                    <span class="s0">try</span><span class="s1">{</span>
+                        <span class="s0">int </span><span class="s1">items = Integer.parseInt(producto.getCantidad())</span><span class="s0">;</span>
+                        <span class="s0">int </span><span class="s1">desc = (((Integer.parseInt(producto.getPrecio())*items)*Integer.parseInt(producto.getOferta()))/</span><span class="s3">100</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">subTotal = subTotal + ((Integer.parseInt(producto.getPrecio())*items)-desc)</span><span class="s0">;</span>
+                        <span class="s1">descuento = descuento + desc</span><span class="s0">;</span>
+                    <span class="s1">}</span><span class="s0">catch </span><span class="s1">(Exception e){</span>
+                        <span class="s0">break;</span>
+                    <span class="s1">}</span>
+
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+
+        <span class="s1">comision = ((subTotal*</span><span class="s3">5</span><span class="s1">)/</span><span class="s3">100</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">total= subTotal+comision</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private class </span><span class="s1">Reordenar </span><span class="s0">extends </span><span class="s1">AsyncTask&lt;Void</span><span class="s0">,</span><span class="s1">Integer</span><span class="s0">,</span><span class="s1">Boolean&gt; {</span>
+
+        <span class="s1">@Override</span>
+        <span class="s0">protected void </span><span class="s1">onPreExecute() {</span>
+            <span class="s0">super</span><span class="s1">.onPreExecute()</span><span class="s0">;</span>
+            <span class="s1">navController= Navigation.findNavController(v)</span><span class="s0">;</span>
+            <span class="s1">listadoCompras= </span><span class="s0">new </span><span class="s1">LinkedList&lt;&gt;()</span><span class="s0">;</span>
+            <span class="s1">telefono = SharedPreferences_Util.getPhone_SP(globalContext)</span><span class="s0">;</span>
+
+            <span class="s1">pago= FirebaseDatabase.getInstance().getReference().child(</span><span class="s4">&quot;pagoCarrito&quot;</span><span class="s1">).child(telefono)</span><span class="s0">;</span>
+            <span class="s1">domicilios=FirebaseDatabase.getInstance().getReference().child(</span><span class="s4">&quot;domicilios&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">ventas = FirebaseDatabase.getInstance().getReference().child(</span><span class="s4">&quot;Ventas&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">carrito = FirebaseDatabase.getInstance().getReference().child(</span><span class="s4">&quot;carrito&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+            <span class="s1">ITEM= (TextView) getActivity().findViewById(R.id.ITEM)</span><span class="s0">;</span>
+            <span class="s1">n=</span><span class="s0">false;</span>
+            <span class="s1">botonFin.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">progressBar.setVisibility(View.VISIBLE)</span><span class="s0">;</span>
+            <span class="s1">progressBar.setMax(</span><span class="s3">100</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">progressBar.setProgress(</span><span class="s3">0</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">i=</span><span class="s3">0</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s1">@Override</span>
+        <span class="s0">protected void </span><span class="s1">onPostExecute(Boolean aBoolean) {</span>
+            <span class="s1">Toast.makeText(globalContext</span><span class="s0">, </span><span class="s4">&quot;¡Pronto el domiciliario recogerá tu pedido y lo llevará hasta tu puerta!&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+            <span class="s1">carrito.child(telefono).child(</span><span class="s4">&quot;1&quot;</span><span class="s1">).setValue(</span><span class="s4">&quot; &quot;</span><span class="s1">).addOnSuccessListener(</span><span class="s0">new </span><span class="s1">OnSuccessListener&lt;Void&gt;() {</span>
+                <span class="s1">@Override</span>
+                <span class="s0">public void </span><span class="s1">onSuccess(Void aVoid) {</span>
+                    <span class="s1">progressBar.setProgress(</span><span class="s3">100</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s0">try </span><span class="s1">{</span>
+                        <span class="s1">Thread.sleep(</span><span class="s3">1000</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">} </span><span class="s0">catch </span><span class="s1">(InterruptedException e) {</span>
+                        <span class="s1">e.printStackTrace()</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+                <span class="s1">}</span>
+            <span class="s1">})</span><span class="s0">;</span>
+            <span class="s1">progressBar.setVisibility(View.INVISIBLE)</span><span class="s0">;</span>
+            <span class="s1">botonFin.setEnabled(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">navController.navigate(R.id.inicioClienteFragment)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s1">@Override</span>
+        <span class="s0">protected void </span><span class="s1">onProgressUpdate(Integer... values) {</span>
+            <span class="s0">super</span><span class="s1">.onProgressUpdate(values)</span><span class="s0">;</span>
+            <span class="s1">progressBar.setProgress(values[</span><span class="s3">0</span><span class="s1">].intValue())</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s1">@Override</span>
+        <span class="s0">protected void </span><span class="s1">onCancelled() {</span>
+            <span class="s0">super</span><span class="s1">.onCancelled()</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s1">@Override</span>
+        <span class="s0">protected </span><span class="s1">Boolean doInBackground(Void... voids) {</span>
+            <span class="s1">count = </span><span class="s0">new </span><span class="s1">CountDownLatch(</span><span class="s3">3</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">carrito.child(telefono).addListenerForSingleValueEvent(</span><span class="s0">new </span><span class="s1">ValueEventListener() {</span>
+                <span class="s1">@RequiresApi(api = Build.VERSION_CODES.O)</span>
+                <span class="s1">@Override</span>
+                <span class="s0">public void </span><span class="s1">onDataChange(@NonNull DataSnapshot snapshot) {</span>
+                    <span class="s1">listadoCompras.removeAll(listadoCompras)</span><span class="s0">;</span>
+                    <span class="s0">for</span><span class="s1">(DataSnapshot snap: snapshot.getChildren()){</span>
+                        <span class="s0">if </span><span class="s1">(!snap.getValue().equals(</span><span class="s4">&quot; &quot;</span><span class="s1">)){</span>
+                            <span class="s1">ItemHelperClass producto = snap.getValue(ItemHelperClass.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                            <span class="s0">if</span><span class="s1">(producto.getFecha().equals(</span><span class="s4">&quot; &quot;</span><span class="s1">)){</span>
+                                <span class="s0">if</span><span class="s1">(producto.getHora().equals(</span><span class="s4">&quot; &quot;</span><span class="s1">)){</span>
+                                    <span class="s1">producto.setFecha(LocalDate.now().toString())</span><span class="s0">;</span>
+                                    <span class="s1">producto.setHora(LocalTime.now().toString())</span><span class="s0">;</span>
+                                    <span class="s1">ventas.child(producto.getNumeroTienda()).push().setValue(producto).addOnSuccessListener(</span><span class="s0">new </span><span class="s1">OnSuccessListener&lt;Void&gt;() {</span>
+                                        <span class="s1">@Override</span>
+                                        <span class="s0">public void </span><span class="s1">onSuccess(Void aVoid) {</span>
+                                            <span class="s1">i+=</span><span class="s3">2</span><span class="s0">;</span>
+                                            <span class="s1">publishProgress(i)</span><span class="s0">;</span>
+                                        <span class="s1">}</span>
+                                    <span class="s1">})</span><span class="s0">;</span>
+                                    <span class="s1">listadoCompras.add(producto)</span><span class="s0">;</span>
+                                <span class="s1">}</span>
+                            <span class="s1">}</span>
+                        <span class="s1">}</span>
+                        <span class="s0">else</span><span class="s1">{ </span><span class="s0">break;</span><span class="s1">}</span>
+                    <span class="s1">}</span>
+                    <span class="s1">count.countDown()</span><span class="s0">;</span>
+                    <span class="s1">domicilios.push().setValue(listadoCompras).addOnSuccessListener(</span><span class="s0">new </span><span class="s1">OnSuccessListener&lt;Void&gt;() {</span>
+                        <span class="s1">@Override</span>
+                        <span class="s0">public void </span><span class="s1">onSuccess(Void aVoid) {</span>
+                            <span class="s1">i+=</span><span class="s3">2</span><span class="s0">;</span>
+                            <span class="s1">publishProgress(i)</span><span class="s0">;</span>
+                            <span class="s1">count.countDown()</span><span class="s0">;</span>
+                            <span class="s1">carrito.child(telefono).removeValue().addOnSuccessListener(</span><span class="s0">new </span><span class="s1">OnSuccessListener&lt;Void&gt;() {</span>
+                                <span class="s1">@Override</span>
+                                <span class="s0">public void </span><span class="s1">onSuccess(Void aVoid) {</span>
+                                    <span class="s1">i+=</span><span class="s3">2</span><span class="s0">;</span>
+                                    <span class="s1">publishProgress(i)</span><span class="s0">;</span>
+                                    <span class="s1">count.countDown()</span><span class="s0">;</span>
+                                <span class="s1">}</span>
+                            <span class="s1">})</span><span class="s0">;</span>
+
+                        <span class="s1">}</span>
+                    <span class="s1">})</span><span class="s0">;</span>
+                <span class="s1">}</span>
+                <span class="s1">@Override</span>
+                <span class="s0">public void </span><span class="s1">onCancelled(@NonNull DatabaseError error) {}})</span><span class="s0">;</span>
+            <span class="s0">try </span><span class="s1">{</span>
+                <span class="s1">count.await()</span><span class="s0">;</span>
+            <span class="s1">}</span><span class="s0">catch </span><span class="s1">(InterruptedException in){</span>
+                <span class="s1">in.printStackTrace()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+            <span class="s1">publishProgress(</span><span class="s3">90</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s0">return true;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+<span class="s1">}</span></pre>
+</body>
+</html>

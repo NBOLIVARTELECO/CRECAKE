@@ -1,0 +1,135 @@
+<html>
+<head>
+<title>UbicacionDomiciliario.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #808080;}
+.s4 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+UbicacionDomiciliario.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.creativecake</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.content.Context</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.annotation.NonNull</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.annotation.Nullable</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.fragment.app.Fragment</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.view.LayoutInflater</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.ViewGroup</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.google.android.gms.maps.GoogleMap</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.android.gms.maps.MapView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.android.gms.maps.OnMapReadyCallback</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.android.gms.maps.model.LatLng</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.android.gms.maps.model.MarkerOptions</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">UbicacionDomiciliario </span><span class="s0">extends </span><span class="s1">Fragment </span><span class="s0">implements </span><span class="s1">OnMapReadyCallback {</span>
+
+    <span class="s1">GoogleMap mMap</span><span class="s0">;</span>
+    <span class="s1">MapView map_v</span><span class="s0">;</span>
+    <span class="s0">private static final </span><span class="s1">String MAPVIEW_BUNDLE_KEY = </span><span class="s2">&quot;MapViewBudleKey&quot;</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">Context globalContext = </span><span class="s0">null;</span>
+
+    <span class="s0">public </span><span class="s1">UbicacionDomiciliario() {</span>
+        <span class="s3">// Required empty public constructor</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onCreate(@Nullable Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onCreate(savedInstanceState)</span><span class="s0">;</span>
+
+        <span class="s1">globalContext = </span><span class="s0">this</span><span class="s1">.getActivity()</span><span class="s0">;</span>
+
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">View onCreateView(LayoutInflater inflater</span><span class="s0">, </span><span class="s1">ViewGroup container</span><span class="s0">,</span>
+                             <span class="s1">Bundle savedInstanceState) {</span>
+        <span class="s3">// Inflate the layout for this fragment</span>
+        <span class="s1">View v =  inflater.inflate(R.layout.fragment_ubicacion_domiciliario</span><span class="s0">, </span><span class="s1">container</span><span class="s0">, false</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">map_v = (MapView) v.findViewById(R.id.mapa)</span><span class="s0">;</span>
+        <span class="s1">Bundle mapViewBundle = </span><span class="s0">null;</span>
+
+        <span class="s0">if</span><span class="s1">(savedInstanceState != </span><span class="s0">null</span><span class="s1">){</span>
+            <span class="s1">mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s1">map_v.onCreate(mapViewBundle)</span><span class="s0">;</span>
+        <span class="s1">map_v.getMapAsync(</span><span class="s0">this</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s0">return </span><span class="s1">v</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onMapReady(GoogleMap map){</span>
+
+        <span class="s1">map.addMarker(</span><span class="s0">new </span><span class="s1">MarkerOptions()</span>
+        <span class="s1">.position(</span><span class="s0">new </span><span class="s1">LatLng(</span><span class="s4">0</span><span class="s0">, </span><span class="s4">0</span><span class="s1">))</span>
+        <span class="s1">.title(</span><span class="s2">&quot;Marker&quot;</span><span class="s1">))</span><span class="s0">;</span>
+
+
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onStart() {</span>
+
+        <span class="s0">super</span><span class="s1">.onStart()</span><span class="s0">;</span>
+        <span class="s1">map_v.onStart()</span><span class="s0">;</span>
+        
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onResume() {</span>
+        <span class="s0">super</span><span class="s1">.onResume()</span><span class="s0">;</span>
+        <span class="s1">map_v.onResume()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onPause() {</span>
+        <span class="s0">super</span><span class="s1">.onPause()</span><span class="s0">;</span>
+        <span class="s1">map_v.onPause()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onStop() {</span>
+        <span class="s0">super</span><span class="s1">.onStop()</span><span class="s0">;</span>
+        <span class="s1">map_v.onStop()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onDestroy() {</span>
+        <span class="s0">super</span><span class="s1">.onDestroy()</span><span class="s0">;</span>
+        <span class="s1">map_v.onDestroy()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onSaveInstanceState(@NonNull Bundle outState) {</span>
+        <span class="s0">super</span><span class="s1">.onSaveInstanceState(outState)</span><span class="s0">;</span>
+
+        <span class="s1">Bundle mapViewBundle = outState.getBundle(MAPVIEW_BUNDLE_KEY)</span><span class="s0">;</span>
+        <span class="s0">if</span><span class="s1">(mapViewBundle == </span><span class="s0">null</span><span class="s1">){</span>
+            <span class="s1">mapViewBundle = </span><span class="s0">new </span><span class="s1">Bundle()</span><span class="s0">;</span>
+            <span class="s1">outState.putBundle(MAPVIEW_BUNDLE_KEY</span><span class="s0">, </span><span class="s1">mapViewBundle)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s1">map_v.onSaveInstanceState(mapViewBundle)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onLowMemory() {</span>
+        <span class="s0">super</span><span class="s1">.onLowMemory()</span><span class="s0">;</span>
+        <span class="s1">map_v.onLowMemory()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span></pre>
+</body>
+</html>

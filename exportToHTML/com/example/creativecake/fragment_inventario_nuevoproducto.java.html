@@ -1,0 +1,88 @@
+<html>
+<head>
+<title>fragment_inventario_nuevoproducto.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #808080;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+fragment_inventario_nuevoproducto.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.creativecake</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.content.Intent</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.annotation.NonNull</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.annotation.Nullable</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.fragment.app.Fragment</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.navigation.Navigation</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.view.LayoutInflater</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.ViewGroup</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ArrayAdapter</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Button</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.EditText</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Space</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Spinner</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DatabaseReference</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.FirebaseDatabase</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.util.Objects</span><span class="s0">;</span>
+<span class="s0">public class </span><span class="s1">fragment_inventario_nuevoproducto </span><span class="s0">extends </span><span class="s1">Fragment {</span>
+
+    <span class="s0">private </span><span class="s1">EditText nombre</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">EditText precio</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">EditText descripcion</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">EditText cantidad</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">Button agregar</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">Spinner tipo</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">EditText oferta</span><span class="s0">;</span>
+
+    <span class="s0">public </span><span class="s1">fragment_inventario_nuevoproducto() {</span>
+        <span class="s2">// Required empty public constructor</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">View onCreateView(LayoutInflater inflater</span><span class="s0">, </span><span class="s1">ViewGroup container</span><span class="s0">,</span>
+                             <span class="s1">Bundle savedInstanceState) {</span>
+        <span class="s2">// Inflate the layout for this fragment</span>
+        <span class="s0">return </span><span class="s1">inflater.inflate(R.layout.fragment_inventario_nuevoproducto</span><span class="s0">, </span><span class="s1">container</span><span class="s0">, false</span><span class="s1">)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">onViewCreated(@NonNull View view</span><span class="s0">, </span><span class="s1">@Nullable Bundle savedInstanceState){</span>
+        <span class="s0">super</span><span class="s1">.onViewCreated(view</span><span class="s0">, </span><span class="s1">savedInstanceState)</span><span class="s0">;</span>
+        <span class="s1">nombre = (EditText) view.findViewById(R.id.editNombrenuevoproducto)</span><span class="s0">;</span>
+        <span class="s1">precio = (EditText) view.findViewById(R.id.editPrecionuevoproducto)</span><span class="s0">;</span>
+        <span class="s1">descripcion = (EditText) view.findViewById(R.id.editDescripcionnuevoproducto)</span><span class="s0">;</span>
+        <span class="s1">cantidad = (EditText) view.findViewById(R.id.editCantidad)</span><span class="s0">;</span>
+        <span class="s1">tipo = (Spinner) view.findViewById(R.id.spinnerNuevoProducto)</span><span class="s0">;</span>
+        <span class="s1">oferta = (EditText) view.findViewById(R.id.ofertaNuevaProducto)</span><span class="s0">;</span>
+        <span class="s1">agregar = (Button) view.findViewById(R.id.buttonAgregarnuevoproducto)</span><span class="s0">;</span>
+
+
+        <span class="s1">ArrayAdapter&lt;CharSequence&gt; adapter = ArrayAdapter.createFromResource(requireActivity()</span><span class="s0">,</span>
+                <span class="s1">R.array.Tipo_producto</span><span class="s0">, </span><span class="s1">android.R.layout.simple_spinner_item)</span><span class="s0">;</span>
+
+        <span class="s1">tipo.setAdapter(adapter)</span><span class="s0">;</span>
+
+        <span class="s1">agregar.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+
+                <span class="s1">Navigation.findNavController(v).navigate(R.id.subirImagen1)</span><span class="s0">;</span>
+
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span></pre>
+</body>
+</html>

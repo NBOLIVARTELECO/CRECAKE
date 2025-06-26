@@ -1,0 +1,124 @@
+<html>
+<head>
+<title>ProgresoTiendaFragment.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #629755; font-style: italic;}
+.s3 { color: #629755; font-weight: bold; font-style: italic;}
+.s4 { color: #808080;}
+.s5 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+ProgresoTiendaFragment.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.creativecake</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.content.Context</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.annotation.NonNull</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.annotation.Nullable</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.fragment.app.Fragment</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.recyclerview.widget.LinearLayoutManager</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.recyclerview.widget.RecyclerView</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.view.LayoutInflater</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.ViewGroup</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DataSnapshot</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DatabaseError</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DatabaseReference</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.FirebaseDatabase</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.ValueEventListener</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.util.ArrayList</span><span class="s0">;</span>
+
+<span class="s2">/**</span>
+ <span class="s2">* A simple {</span><span class="s3">@link </span><span class="s2">Fragment} subclass.</span>
+ <span class="s2">* Use the {</span><span class="s3">@link </span><span class="s2">ProgresoTiendaFragment#newInstance} factory method to</span>
+ <span class="s2">* create an instance of this fragment.</span>
+ <span class="s2">*/</span>
+<span class="s0">public class </span><span class="s1">ProgresoTiendaFragment </span><span class="s0">extends </span><span class="s1">Fragment {</span>
+    <span class="s1">View v</span><span class="s0">;</span>
+    <span class="s1">AdapCotizaciones adaptador</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">RecyclerView recyclerProductos</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">ArrayList&lt;CotizacionHelperClass&gt; listaProductos</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">DatabaseReference datosCotizaciones</span><span class="s0">;</span>
+    <span class="s1">String telefono</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">Context globalContext = </span><span class="s0">null;</span>
+
+
+    <span class="s0">public </span><span class="s1">ProgresoTiendaFragment() {</span>
+        <span class="s4">// Required empty public constructor</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public static </span><span class="s1">ProgresoTiendaFragment newInstance(String param1</span><span class="s0">, </span><span class="s1">String param2) {</span>
+        <span class="s1">ProgresoTiendaFragment fragment = </span><span class="s0">new </span><span class="s1">ProgresoTiendaFragment()</span><span class="s0">;</span>
+        <span class="s1">Bundle args = </span><span class="s0">new </span><span class="s1">Bundle()</span><span class="s0">;</span>
+        <span class="s1">fragment.setArguments(args)</span><span class="s0">;</span>
+        <span class="s0">return </span><span class="s1">fragment</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onCreate(Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onCreate(savedInstanceState)</span><span class="s0">;</span>
+        <span class="s0">if </span><span class="s1">(getArguments() != </span><span class="s0">null</span><span class="s1">) {}</span>
+        <span class="s1">globalContext = </span><span class="s0">this</span><span class="s1">.getActivity()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">View onCreateView(LayoutInflater inflater</span><span class="s0">, </span><span class="s1">ViewGroup container</span><span class="s0">,</span>
+                             <span class="s1">Bundle savedInstanceState) {</span>
+        <span class="s4">// Inflate the layout for this fragment</span>
+        <span class="s0">return </span><span class="s1">inflater.inflate(R.layout.fragment_progreso_tienda</span><span class="s0">, </span><span class="s1">container</span><span class="s0">, false</span><span class="s1">)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onViewCreated(@NonNull View view</span><span class="s0">, </span><span class="s1">@Nullable Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onViewCreated(view</span><span class="s0">, </span><span class="s1">savedInstanceState)</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.v=view</span><span class="s0">;</span>
+        <span class="s1">Inicializar()</span><span class="s0">;</span>
+        <span class="s1">Base()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">Inicializar(){</span>
+
+        <span class="s1">telefono = SharedPreferences_Util.getPhone_SP(globalContext)</span><span class="s0">;</span>
+
+        <span class="s1">recyclerProductos = (RecyclerView) v.findViewById(R.id.recyclerProgreso)</span><span class="s0">;</span>
+        <span class="s1">recyclerProductos.setLayoutManager(</span><span class="s0">new </span><span class="s1">LinearLayoutManager(getContext()))</span><span class="s0">;</span>
+        <span class="s1">listaProductos = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span>
+        <span class="s1">adaptador = </span><span class="s0">new </span><span class="s1">AdapCotizaciones(listaProductos</span><span class="s0">, </span><span class="s1">globalContext</span><span class="s0">, </span><span class="s1">telefono)</span><span class="s0">;</span>
+        <span class="s1">recyclerProductos.setAdapter(adaptador)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">Base() {</span>
+
+        <span class="s1">datosCotizaciones = FirebaseDatabase.getInstance().getReference().getRoot().child(</span><span class="s5">&quot;cotiTienda&quot;</span><span class="s1">).child(telefono)</span><span class="s0">;</span>
+        <span class="s1">datosCotizaciones.addListenerForSingleValueEvent(</span><span class="s0">new </span><span class="s1">ValueEventListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onDataChange(@NonNull DataSnapshot snapshot) {</span>
+                <span class="s1">listaProductos.removeAll(listaProductos)</span><span class="s0">;</span>
+                <span class="s0">for </span><span class="s1">(DataSnapshot ds : snapshot.getChildren()) {</span>
+                    <span class="s1">CotizacionHelperClass producto = ds.getValue(CotizacionHelperClass.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">listaProductos.add(producto)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+                <span class="s1">adaptador.notifyDataSetChanged()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onCancelled(@NonNull DatabaseError error) {</span>
+
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span></pre>
+</body>
+</html>

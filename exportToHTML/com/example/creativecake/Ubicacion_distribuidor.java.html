@@ -1,0 +1,77 @@
+<html>
+<head>
+<title>Ubicacion_distribuidor.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #629755; font-style: italic;}
+.s3 { color: #6897bb;}
+.s4 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Ubicacion_distribuidor.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.creativecake</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.annotation.NonNull</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.annotation.Nullable</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.fragment.app.Fragment</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.LayoutInflater</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.ViewGroup</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.google.android.gms.maps.CameraUpdateFactory</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.android.gms.maps.GoogleMap</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.android.gms.maps.OnMapReadyCallback</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.android.gms.maps.SupportMapFragment</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.android.gms.maps.model.LatLng</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.android.gms.maps.model.MarkerOptions</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">Ubicacion_distribuidor </span><span class="s0">extends </span><span class="s1">Fragment {</span>
+
+    <span class="s0">private </span><span class="s1">OnMapReadyCallback callback = </span><span class="s0">new </span><span class="s1">OnMapReadyCallback() {</span>
+
+        <span class="s2">/**</span>
+         <span class="s2">* Manipulates the map once available.</span>
+         <span class="s2">* This callback is triggered when the map is ready to be used.</span>
+         <span class="s2">* This is where we can add markers or lines, add listeners or move the camera.</span>
+         <span class="s2">* In this case, we just add a marker near Sydney, Australia.</span>
+         <span class="s2">* If Google Play services is not installed on the device, the user will be prompted to</span>
+         <span class="s2">* install it inside the SupportMapFragment. This method will only be triggered once the</span>
+         <span class="s2">* user has installed Google Play services and returned to the app.</span>
+         <span class="s2">*/</span>
+        <span class="s1">@Override</span>
+        <span class="s0">public void </span><span class="s1">onMapReady(GoogleMap googleMap) {</span>
+            <span class="s1">LatLng sydney = </span><span class="s0">new </span><span class="s1">LatLng(-</span><span class="s3">34</span><span class="s0">, </span><span class="s3">151</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">googleMap.addMarker(</span><span class="s0">new </span><span class="s1">MarkerOptions().position(sydney).title(</span><span class="s4">&quot;Marker in Sydney&quot;</span><span class="s1">))</span><span class="s0">;</span>
+            <span class="s1">googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))</span><span class="s0">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span><span class="s0">;</span>
+
+    <span class="s1">@Nullable</span>
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">View onCreateView(@NonNull LayoutInflater inflater</span><span class="s0">,</span>
+                             <span class="s1">@Nullable ViewGroup container</span><span class="s0">,</span>
+                             <span class="s1">@Nullable Bundle savedInstanceState) {</span>
+        <span class="s0">return </span><span class="s1">inflater.inflate(R.layout.fragment_ubicacion_distribuidor</span><span class="s0">, </span><span class="s1">container</span><span class="s0">, false</span><span class="s1">)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onViewCreated(@NonNull View view</span><span class="s0">, </span><span class="s1">@Nullable Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onViewCreated(view</span><span class="s0">, </span><span class="s1">savedInstanceState)</span><span class="s0">;</span>
+        <span class="s1">SupportMapFragment mapFragment =</span>
+                <span class="s1">(SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map)</span><span class="s0">;</span>
+        <span class="s0">if </span><span class="s1">(mapFragment != </span><span class="s0">null</span><span class="s1">) {</span>
+            <span class="s1">mapFragment.getMapAsync(callback)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+<span class="s1">}</span></pre>
+</body>
+</html>

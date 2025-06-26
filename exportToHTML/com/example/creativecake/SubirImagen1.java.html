@@ -1,0 +1,253 @@
+<html>
+<head>
+<title>SubirImagen1.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6897bb;}
+.s3 { color: #808080;}
+.s4 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+SubirImagen1.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.creativecake</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.app.Activity</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.app.ProgressDialog</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.Context</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.Intent</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.graphics.Bitmap</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.net.Uri</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.annotation.NonNull</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.annotation.Nullable</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.fragment.app.Fragment</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.navigation.Navigation</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.provider.MediaStore</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.LayoutInflater</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.ViewGroup</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ArrayAdapter</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Button</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.EditText</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ImageView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Spinner</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Toast</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.google.android.gms.auth.api.signin.internal.Storage</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.android.gms.tasks.Continuation</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.android.gms.tasks.OnCompleteListener</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.android.gms.tasks.OnFailureListener</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.android.gms.tasks.OnSuccessListener</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.android.gms.tasks.Task</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DataSnapshot</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DatabaseError</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DatabaseReference</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.FirebaseDatabase</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.ValueEventListener</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.storage.FirebaseStorage</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.storage.StorageReference</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.storage.UploadTask</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.io.File</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.io.IOException</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">SubirImagen1 </span><span class="s0">extends </span><span class="s1">Fragment {</span>
+
+    <span class="s1">ImageView imagen</span><span class="s0">;</span>
+    <span class="s1">Button subir</span><span class="s0">, </span><span class="s1">seleccionar</span><span class="s0">;</span>
+    <span class="s1">EditText nombre</span><span class="s0">, </span><span class="s1">precio</span><span class="s0">, </span><span class="s1">descripcion</span><span class="s0">, </span><span class="s1">cantidad</span><span class="s0">, </span><span class="s1">oferta</span><span class="s0">;</span>
+    <span class="s1">Spinner tipo</span><span class="s0">;</span>
+    <span class="s1">ProgressDialog cargando</span><span class="s0">;</span>
+    <span class="s1">String ratingProducto</span><span class="s0">, </span><span class="s1">telefono</span><span class="s0">;</span>
+    <span class="s1">StoreHelperClass tienda</span><span class="s0">;</span>
+    <span class="s1">DatabaseReference datosUsuario</span><span class="s0">;</span>
+
+    <span class="s0">private </span><span class="s1">Context globalContext = </span><span class="s0">null;</span>
+
+    <span class="s1">StorageReference storageReference</span><span class="s0">;</span>
+    <span class="s1">FirebaseDatabase database</span><span class="s0">;</span>
+    <span class="s1">DatabaseReference reference</span><span class="s0">;</span>
+
+    <span class="s0">private final int </span><span class="s1">PICK_PHOTO = </span><span class="s2">1</span><span class="s0">;</span>
+
+    <span class="s0">public </span><span class="s1">SubirImagen1() {</span>
+        <span class="s3">// Required empty public constructor</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public static </span><span class="s1">SubirImagen1 newInstance(String param1</span><span class="s0">, </span><span class="s1">String param2) {</span>
+        <span class="s1">SubirImagen1 fragment = </span><span class="s0">new </span><span class="s1">SubirImagen1()</span><span class="s0">;</span>
+        <span class="s1">Bundle args = </span><span class="s0">new </span><span class="s1">Bundle()</span><span class="s0">;</span>
+        <span class="s1">fragment.setArguments(args)</span><span class="s0">;</span>
+        <span class="s0">return </span><span class="s1">fragment</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onCreate(Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onCreate(savedInstanceState)</span><span class="s0">;</span>
+        <span class="s0">if </span><span class="s1">(getArguments() != </span><span class="s0">null</span><span class="s1">) {</span>
+        <span class="s1">}</span>
+
+        <span class="s1">globalContext = </span><span class="s0">this</span><span class="s1">.getActivity()</span><span class="s0">;</span>
+        <span class="s1">cargando = </span><span class="s0">new </span><span class="s1">ProgressDialog(globalContext)</span><span class="s0">;</span>
+
+
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">View onCreateView(</span><span class="s0">final </span><span class="s1">LayoutInflater inflater</span><span class="s0">, </span><span class="s1">ViewGroup container</span><span class="s0">,</span>
+                             <span class="s1">Bundle savedInstanceState) {</span>
+        <span class="s3">// Inflate the layout for this fragment</span>
+        <span class="s1">View main = inflater.inflate(R.layout.fragment_subir_imagen1</span><span class="s0">, </span><span class="s1">container</span><span class="s0">, false</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">subir = (Button) main.findViewById(R.id.btn_sunirfoto)</span><span class="s0">;</span>
+        <span class="s1">seleccionar = (Button) main.findViewById(R.id.btn_selefoto)</span><span class="s0">;</span>
+        <span class="s1">imagen = (ImageView) main.findViewById(R.id.img_foto)</span><span class="s0">;</span>
+        <span class="s1">nombre = (EditText) getActivity().findViewById(R.id.editNombrenuevoproducto)</span><span class="s0">;</span>
+        <span class="s1">precio = (EditText) getActivity().findViewById(R.id.editPrecionuevoproducto)</span><span class="s0">;</span>
+        <span class="s1">descripcion = (EditText) getActivity().findViewById(R.id.editDescripcionnuevoproducto)</span><span class="s0">;</span>
+        <span class="s1">cantidad = (EditText) getActivity().findViewById(R.id.editCantidad)</span><span class="s0">;</span>
+        <span class="s1">oferta = (EditText) getActivity().findViewById(R.id.ofertaNuevaProducto)</span><span class="s0">;</span>
+        <span class="s1">tipo = (Spinner) getActivity().findViewById(R.id.spinnerNuevoProducto)</span><span class="s0">;</span>
+
+
+        <span class="s1">ArrayAdapter&lt;CharSequence&gt; adapter = ArrayAdapter.createFromResource(requireActivity()</span><span class="s0">,</span>
+                <span class="s1">R.array.Tipo_producto</span><span class="s0">, </span><span class="s1">android.R.layout.simple_spinner_item)</span><span class="s0">;</span>
+
+        <span class="s1">tipo.setAdapter(adapter)</span><span class="s0">;</span>
+
+        <span class="s1">seleccionar.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                <span class="s1">Intent intent = </span><span class="s0">new </span><span class="s1">Intent()</span><span class="s0">;</span>
+                <span class="s1">intent.setType(</span><span class="s4">&quot;image/*&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">intent.setAction(Intent.ACTION_GET_CONTENT)</span><span class="s0">;</span>
+                <span class="s1">startActivityForResult(Intent.createChooser(intent</span><span class="s0">, </span><span class="s4">&quot;Seleccione una imagen&quot;</span><span class="s1">)</span><span class="s0">,</span><span class="s1">PICK_PHOTO)</span><span class="s0">;;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+        <span class="s0">return  </span><span class="s1">main</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onActivityResult(</span><span class="s0">int </span><span class="s1">requestCode</span><span class="s0">, int </span><span class="s1">resultCode</span><span class="s0">, </span><span class="s1">@Nullable Intent data) {</span>
+        <span class="s0">super</span><span class="s1">.onActivityResult(requestCode</span><span class="s0">, </span><span class="s1">resultCode</span><span class="s0">, </span><span class="s1">data)</span><span class="s0">;</span>
+        <span class="s1">telefono = SharedPreferences_Util.getPhone_SP(globalContext)</span><span class="s0">;</span>
+        <span class="s1">System.out.println(telefono)</span><span class="s0">;</span>
+        <span class="s1">datosUsuario= FirebaseDatabase.getInstance().getReference(</span><span class="s4">&quot;usuarioNegocio&quot;</span><span class="s1">).child(telefono)</span><span class="s0">;</span>
+        <span class="s1">datosUsuario.addListenerForSingleValueEvent(</span><span class="s0">new </span><span class="s1">ValueEventListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onDataChange(@NonNull DataSnapshot snapshot) {</span>
+                <span class="s1">tienda =snapshot.getValue(StoreHelperClass.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s0">try </span><span class="s1">{</span>
+                    <span class="s1">System.out.println(tienda.getNombre())</span><span class="s0">;</span>
+                <span class="s1">}</span>
+                <span class="s0">catch</span><span class="s1">(Exception e){</span>
+                    <span class="s1">System.out.println(</span><span class="s4">&quot;F&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onCancelled(@NonNull DatabaseError error) {</span>
+
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s0">if</span><span class="s1">(requestCode == PICK_PHOTO &amp;&amp; resultCode == Activity.RESULT_OK &amp;&amp; data != </span><span class="s0">null </span><span class="s1">&amp;&amp; data.getData() != </span><span class="s0">null</span><span class="s1">){</span>
+
+            <span class="s0">final </span><span class="s1">Uri filepath = data.getData()</span><span class="s0">;</span>
+
+
+            <span class="s0">try</span><span class="s1">{</span>
+
+                <span class="s1">Bitmap bitmapImagen = MediaStore.Images.Media.getBitmap(globalContext.getContentResolver()</span><span class="s0">, </span><span class="s1">filepath)</span><span class="s0">;</span>
+                <span class="s1">imagen.setImageBitmap(bitmapImagen)</span><span class="s0">;</span>
+
+            <span class="s1">} </span><span class="s0">catch </span><span class="s1">(IOException e){</span>
+                <span class="s1">e.printStackTrace()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+
+            <span class="s0">int </span><span class="s1">p = (</span><span class="s0">int</span><span class="s1">) (Math.random() * </span><span class="s2">25 </span><span class="s1">+ </span><span class="s2">1</span><span class="s1">)</span><span class="s0">; int </span><span class="s1">s = (</span><span class="s0">int</span><span class="s1">) (Math.random() * </span><span class="s2">25 </span><span class="s1">+ </span><span class="s2">1</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s0">int </span><span class="s1">t = (</span><span class="s0">int</span><span class="s1">) (Math.random() * </span><span class="s2">25 </span><span class="s1">+ </span><span class="s2">1</span><span class="s1">)</span><span class="s0">; int </span><span class="s1">c = (</span><span class="s0">int</span><span class="s1">) (Math.random() * </span><span class="s2">25 </span><span class="s1">+ </span><span class="s2">1</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s0">int </span><span class="s1">numero1 = (</span><span class="s0">int</span><span class="s1">) (Math.random() * </span><span class="s2">1012 </span><span class="s1">+ </span><span class="s2">2111</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s0">int </span><span class="s1">numero2 = (</span><span class="s0">int</span><span class="s1">) (Math.random() * </span><span class="s2">1012 </span><span class="s1">+ </span><span class="s2">2111</span><span class="s1">)</span><span class="s0">;</span>
+
+            <span class="s1">String[] elementos = {</span><span class="s4">&quot;a&quot;</span><span class="s0">, </span><span class="s4">&quot;b&quot;</span><span class="s0">, </span><span class="s4">&quot;c&quot;</span><span class="s0">, </span><span class="s4">&quot;d&quot;</span><span class="s0">, </span><span class="s4">&quot;e&quot;</span><span class="s0">, </span><span class="s4">&quot;f&quot;</span><span class="s0">, </span><span class="s4">&quot;g&quot;</span><span class="s0">, </span><span class="s4">&quot;h&quot;</span><span class="s0">, </span><span class="s4">&quot;i&quot;</span><span class="s0">, </span><span class="s4">&quot;j&quot;</span><span class="s0">, </span><span class="s4">&quot;k&quot;</span><span class="s0">, </span><span class="s4">&quot;l&quot;</span><span class="s0">,</span>
+                    <span class="s4">&quot;m&quot;</span><span class="s0">, </span><span class="s4">&quot;n&quot;</span><span class="s0">, </span><span class="s4">&quot;o&quot;</span><span class="s0">, </span><span class="s4">&quot;p&quot;</span><span class="s0">, </span><span class="s4">&quot;q&quot;</span><span class="s0">, </span><span class="s4">&quot;r&quot;</span><span class="s0">, </span><span class="s4">&quot;s&quot;</span><span class="s0">, </span><span class="s4">&quot;t&quot;</span><span class="s0">, </span><span class="s4">&quot;u&quot;</span><span class="s0">, </span><span class="s4">&quot;v&quot;</span><span class="s0">, </span><span class="s4">&quot;w&quot;</span><span class="s0">, </span><span class="s4">&quot;x&quot;</span><span class="s0">, </span><span class="s4">&quot;y&quot;</span><span class="s0">, </span><span class="s4">&quot;z&quot;</span><span class="s1">}</span><span class="s0">;</span>
+
+            <span class="s0">final </span><span class="s1">String aleatorio = elementos[p] + elementos[s] + numero1 + elementos[t] + elementos[c] +</span>
+                    <span class="s1">numero2</span><span class="s0">;</span>
+
+            <span class="s1">subir.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+                <span class="s1">@Override</span>
+                <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+
+                    <span class="s1">cargando.setTitle(</span><span class="s4">&quot;Subiendo imagen&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">cargando.setMessage(</span><span class="s4">&quot;Espere por favor...&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">cargando.show()</span><span class="s0">;</span>
+
+                    <span class="s1">database = FirebaseDatabase.getInstance()</span><span class="s0">;</span>
+                    <span class="s1">reference = database.getReference(</span><span class="s4">&quot;productoTienda&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">storageReference = FirebaseStorage.getInstance().getReference(</span><span class="s4">&quot;Imagen Producto&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+                    <span class="s0">final </span><span class="s1">StorageReference img_reference = storageReference.child(aleatorio)</span><span class="s0">;</span>
+                    <span class="s1">UploadTask uploadTask = img_reference.putFile(filepath)</span><span class="s0">;</span>
+
+                    <span class="s1">Navigation.findNavController(v).navigate(R.id.fragment_tienda_inventario)</span><span class="s0">;</span>
+
+                    <span class="s1">Task&lt;Uri&gt; urlTask = uploadTask.continueWithTask(</span><span class="s0">new </span><span class="s1">Continuation&lt;UploadTask.TaskSnapshot</span><span class="s0">, </span><span class="s1">Task&lt;Uri&gt;&gt;() {</span>
+                        <span class="s1">@Override</span>
+                        <span class="s0">public </span><span class="s1">Task&lt;Uri&gt; then(@NonNull Task&lt;UploadTask.TaskSnapshot&gt; task) </span><span class="s0">throws </span><span class="s1">Exception {</span>
+                            <span class="s0">if </span><span class="s1">(!task.isSuccessful()) {</span>
+                                <span class="s0">throw </span><span class="s1">task.getException()</span><span class="s0">;</span>
+                            <span class="s1">}</span>
+
+                            <span class="s3">// Continue with the task to get the download URL</span>
+                            <span class="s0">return </span><span class="s1">img_reference.getDownloadUrl()</span><span class="s0">;</span>
+                        <span class="s1">}</span>
+                    <span class="s1">}).addOnCompleteListener(</span><span class="s0">new </span><span class="s1">OnCompleteListener&lt;Uri&gt;() {</span>
+                        <span class="s1">@Override</span>
+                        <span class="s0">public void </span><span class="s1">onComplete(@NonNull Task&lt;Uri&gt; task) {</span>
+                            <span class="s0">if </span><span class="s1">(task.isSuccessful()) {</span>
+                                <span class="s1">Uri downloadUri = task.getResult()</span><span class="s0">;</span>
+
+                                <span class="s1">String nombreProducto = nombre.getText().toString()</span><span class="s0">;</span>
+                                <span class="s1">String precioProducto = precio.getText().toString()</span><span class="s0">;</span>
+                                <span class="s1">String descripcionProducto = descripcion.getText().toString()</span><span class="s0">;</span>
+                                <span class="s1">String cantidadProducto = cantidad.getText().toString()</span><span class="s0">;</span>
+                                <span class="s1">String tipoProducto = (String) tipo.getItemAtPosition(tipo.getSelectedItemPosition())</span><span class="s0">;</span>
+                                <span class="s1">String ofertaProducto = oferta.getText().toString()</span><span class="s0">;;</span>
+                                <span class="s1">ratingProducto = </span><span class="s4">&quot;5.0&quot;</span><span class="s0">;</span>
+
+                                <span class="s0">final </span><span class="s1">ProductHelperClass helperClass = </span><span class="s0">new </span><span class="s1">ProductHelperClass(nombreProducto</span><span class="s0">, </span><span class="s1">precioProducto</span>
+                                        <span class="s0">, </span><span class="s1">descripcionProducto</span><span class="s0">, </span><span class="s1">tipoProducto</span><span class="s0">, </span><span class="s1">tienda.getNombre()</span><span class="s0">, </span><span class="s1">downloadUri.toString()</span><span class="s0">, </span><span class="s1">cantidadProducto</span><span class="s0">, </span><span class="s1">ofertaProducto</span><span class="s0">, </span><span class="s1">ratingProducto)</span><span class="s0">;</span>
+
+                                <span class="s1">reference.push().setValue(helperClass)</span><span class="s0">;</span>
+                                <span class="s1">cargando.dismiss()</span><span class="s0">;</span>
+
+                                <span class="s1">Toast.makeText(globalContext</span><span class="s0">, </span><span class="s4">&quot;Imagen cargada con exito&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+
+
+                            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                                <span class="s1">Toast.makeText(globalContext</span><span class="s0">, </span><span class="s4">&quot;No se pudo cargar la imagen&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                                <span class="s1">cargando.dismiss()</span><span class="s0">;</span>
+                            <span class="s1">}</span>
+                        <span class="s1">}</span>
+                    <span class="s1">})</span><span class="s0">;</span>
+
+
+                <span class="s1">}</span>
+
+            <span class="s1">})</span><span class="s0">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+<span class="s1">}</span></pre>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<html>
+<head>
+<title>ClienteCotiHelper.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+ClienteCotiHelper.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.creativecake</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">ClienteCotiHelper {</span>
+    <span class="s0">private </span><span class="s1">String tienda</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">String direccionTienda</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">String numeroTienda</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">String nombreCotizacion</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">String fechaEntrega</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">String horaEntrega</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">String precio</span><span class="s0">;</span>
+
+    <span class="s0">public </span><span class="s1">ClienteCotiHelper() {}</span>
+
+    <span class="s0">public </span><span class="s1">ClienteCotiHelper(String tienda</span><span class="s0">, </span><span class="s1">String direccionTienda</span><span class="s0">, </span><span class="s1">String numeroTienda</span><span class="s0">,</span>
+                             <span class="s1">String nombreCotizacion</span><span class="s0">, </span><span class="s1">String fechaEntrega</span><span class="s0">, </span><span class="s1">String horaEntrega</span><span class="s0">, </span><span class="s1">String precio) {</span>
+        <span class="s0">this</span><span class="s1">.tienda = tienda</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.direccionTienda = direccionTienda</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.numeroTienda = numeroTienda</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.nombreCotizacion = nombreCotizacion</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.fechaEntrega = fechaEntrega</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.horaEntrega = horaEntrega</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.precio = precio</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getTienda() {</span>
+        <span class="s0">return </span><span class="s1">tienda</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setTienda(String tienda) {</span>
+        <span class="s0">this</span><span class="s1">.tienda = tienda</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getDireccionTienda() {</span>
+        <span class="s0">return </span><span class="s1">direccionTienda</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setDireccionTienda(String direccionTienda) {</span>
+        <span class="s0">this</span><span class="s1">.direccionTienda = direccionTienda</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getNumeroTienda() {</span>
+        <span class="s0">return </span><span class="s1">numeroTienda</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setNumeroTienda(String numeroTienda) {</span>
+        <span class="s0">this</span><span class="s1">.numeroTienda = numeroTienda</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getNombreCotizacion() {</span>
+        <span class="s0">return </span><span class="s1">nombreCotizacion</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setNombreCotizacion(String nombreCotizacion) {</span>
+        <span class="s0">this</span><span class="s1">.nombreCotizacion = nombreCotizacion</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getFechaEntrega() {</span>
+        <span class="s0">return </span><span class="s1">fechaEntrega</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setFechaEntrega(String fechaEntrega) {</span>
+        <span class="s0">this</span><span class="s1">.fechaEntrega = fechaEntrega</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getHoraEntrega() {</span>
+        <span class="s0">return </span><span class="s1">horaEntrega</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setHoraEntrega(String horaEntrega) {</span>
+        <span class="s0">this</span><span class="s1">.horaEntrega = horaEntrega</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getPrecio() {</span>
+        <span class="s0">return </span><span class="s1">precio</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setPrecio(String precio) {</span>
+        <span class="s0">this</span><span class="s1">.precio = precio</span><span class="s0">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

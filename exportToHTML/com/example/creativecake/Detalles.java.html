@@ -1,0 +1,77 @@
+<html>
+<head>
+<title>Detalles.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Detalles.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.creativecake</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.app.Dialog</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.Context</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.Window</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Button</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.TextView</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">Detalles {</span>
+    <span class="s1">CotizacionHelperClass cotizacion</span><span class="s0">;</span>
+    <span class="s1">String telefono</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">Context globalContext = </span><span class="s0">null;</span>
+    <span class="s1">TextView nombreCoti</span><span class="s0">, </span><span class="s1">nombreCliente</span><span class="s0">, </span><span class="s1">saborCoti</span><span class="s0">,</span><span class="s1">tamañoCoti</span><span class="s0">, </span><span class="s1">coberturaCoti</span><span class="s0">, </span><span class="s1">decoracionCoti</span><span class="s0">,</span><span class="s1">especificoCoti</span><span class="s0">, </span><span class="s1">fechaCoti</span><span class="s0">, </span><span class="s1">horaCoti</span><span class="s0">, </span><span class="s1">dineroCoti</span><span class="s0">, </span><span class="s1">numeroCliente</span><span class="s0">;</span>
+
+    <span class="s0">public </span><span class="s1">Detalles(</span><span class="s0">final </span><span class="s1">CotizacionHelperClass cotizacion</span><span class="s0">, </span><span class="s1">String telefono</span><span class="s0">, final </span><span class="s1">Context globalContext) {</span>
+        <span class="s0">this</span><span class="s1">.cotizacion = cotizacion</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.telefono = telefono</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.globalContext = globalContext</span><span class="s0">;</span>
+        <span class="s0">final </span><span class="s1">Dialog dialog = </span><span class="s0">new </span><span class="s1">Dialog(globalContext)</span><span class="s0">;</span>
+        <span class="s1">dialog.requestWindowFeature((Window.FEATURE_NO_TITLE))</span><span class="s0">;</span>
+        <span class="s1">dialog.setCancelable(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">dialog.setContentView(R.layout.detalles)</span><span class="s0">;</span>
+
+        <span class="s1">Button btn_volver = (Button) dialog.findViewById(R.id.btn_Volver)</span><span class="s0">;</span>
+
+        <span class="s1">nombreCoti = (TextView) dialog.findViewById(R.id.nombrePedidoC)</span><span class="s0">;</span>
+        <span class="s1">nombreCliente= (TextView) dialog.findViewById(R.id.nombreClienteC)</span><span class="s0">;</span>
+        <span class="s1">saborCoti =(TextView) dialog.findViewById(R.id.saborCotizacionT)</span><span class="s0">;</span>
+        <span class="s1">tamañoCoti=(TextView) dialog.findViewById(R.id.tamañoCotizacionT)</span><span class="s0">;</span>
+        <span class="s1">coberturaCoti=(TextView) dialog.findViewById(R.id.coberturaCotizacionT)</span><span class="s0">;</span>
+        <span class="s1">decoracionCoti=(TextView) dialog.findViewById(R.id.decoracionCotizacionT)</span><span class="s0">;</span>
+        <span class="s1">especificoCoti=(TextView) dialog.findViewById(R.id.especificacionesCotizacionT)</span><span class="s0">;</span>
+        <span class="s1">fechaCoti =(TextView) dialog.findViewById(R.id.fechaCotizacionT)</span><span class="s0">;</span>
+        <span class="s1">horaCoti=(TextView) dialog.findViewById(R.id.horaCotizacionT)</span><span class="s0">;</span>
+        <span class="s1">dineroCoti=(TextView) dialog.findViewById(R.id.dineroCotizacionT)</span><span class="s0">;</span>
+        <span class="s1">numeroCliente=(TextView) dialog.findViewById(R.id.cotizacionNumeroC)</span><span class="s0">;</span>
+
+        <span class="s1">nombreCoti.setText(cotizacion.getNombre())</span><span class="s0">;</span>
+        <span class="s1">nombreCliente.setText(cotizacion.getNombreCliente())</span><span class="s0">;</span>
+        <span class="s1">saborCoti.setText(cotizacion.getSabor())</span><span class="s0">;</span>
+        <span class="s1">tamañoCoti.setText(cotizacion.getTamaño())</span><span class="s0">;</span>
+        <span class="s1">coberturaCoti.setText(cotizacion.getCobertura())</span><span class="s0">;</span>
+        <span class="s1">decoracionCoti.setText(cotizacion.getDecoracion())</span><span class="s0">;</span>
+        <span class="s1">especificoCoti.setText(cotizacion.getEspecificaciones())</span><span class="s0">;</span>
+        <span class="s1">fechaCoti.setText(cotizacion.getFecha())</span><span class="s0">;</span>
+        <span class="s1">horaCoti.setText(cotizacion.getHora())</span><span class="s0">;</span>
+        <span class="s1">dineroCoti.setText(cotizacion.getPrecio())</span><span class="s0">;</span>
+        <span class="s1">numeroCliente.setText(cotizacion.getNumeroCliente())</span><span class="s0">;</span>
+
+        <span class="s1">btn_volver.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                <span class="s1">dialog.dismiss()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+        <span class="s1">dialog.show()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

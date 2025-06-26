@@ -1,0 +1,168 @@
+<html>
+<head>
+<title>ItemHelperClass.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+ItemHelperClass.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.creativecake</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">ItemHelperClass {</span>
+    <span class="s0">private </span><span class="s1">String producto</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">String cantidad</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">String tienda</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">String direccionTienda</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">String numeroTienda</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">String usuario</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">String direccionUsuario</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">String numeroUsuario</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">String imagen</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">String oferta</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">String precio</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">String fecha</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">String hora</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">String lugar</span><span class="s0">;</span>
+
+    <span class="s0">public </span><span class="s1">ItemHelperClass(){}</span>
+
+    <span class="s0">public </span><span class="s1">ItemHelperClass(String producto</span><span class="s0">, </span><span class="s1">String cantidad</span><span class="s0">, </span><span class="s1">String tienda</span><span class="s0">, </span><span class="s1">String direccionTienda</span><span class="s0">,</span>
+                           <span class="s1">String numeroTienda</span><span class="s0">, </span><span class="s1">String usuario</span><span class="s0">, </span><span class="s1">String direccionUsuario</span><span class="s0">, </span><span class="s1">String numeroUsuario</span><span class="s0">,</span>
+                           <span class="s1">String imagen</span><span class="s0">, </span><span class="s1">String oferta</span><span class="s0">, </span><span class="s1">String precio</span><span class="s0">, </span><span class="s1">String fecha</span><span class="s0">, </span><span class="s1">String hora) {</span>
+        <span class="s0">this</span><span class="s1">.producto = producto</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.cantidad = cantidad</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.tienda = tienda</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.direccionTienda = direccionTienda</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.numeroTienda = numeroTienda</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.usuario = usuario</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.direccionUsuario = direccionUsuario</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.numeroUsuario = numeroUsuario</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.imagen = imagen</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.oferta = oferta</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.precio = precio</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.fecha=fecha</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.hora=hora</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getProducto() {</span>
+        <span class="s0">return </span><span class="s1">producto</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setProducto(String producto) {</span>
+        <span class="s0">this</span><span class="s1">.producto = producto</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getCantidad() {</span>
+        <span class="s0">return </span><span class="s1">cantidad</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setCantidad(String cantidad) {</span>
+        <span class="s0">this</span><span class="s1">.cantidad = cantidad</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getTienda() {</span>
+        <span class="s0">return </span><span class="s1">tienda</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setTienda(String tienda) {</span>
+        <span class="s0">this</span><span class="s1">.tienda = tienda</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getDireccionTienda() {</span>
+        <span class="s0">return </span><span class="s1">direccionTienda</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setDireccionTienda(String direccionTienda) {</span>
+        <span class="s0">this</span><span class="s1">.direccionTienda = direccionTienda</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getNumeroTienda() {</span>
+        <span class="s0">return </span><span class="s1">numeroTienda</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setNumeroTienda(String numeroTienda) {</span>
+        <span class="s0">this</span><span class="s1">.numeroTienda = numeroTienda</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getUsuario() {</span>
+        <span class="s0">return </span><span class="s1">usuario</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setUsuario(String usuario) {</span>
+        <span class="s0">this</span><span class="s1">.usuario = usuario</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getDireccionUsuario() {</span>
+        <span class="s0">return </span><span class="s1">direccionUsuario</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setDireccionUsuario(String direccionUsuario) {</span>
+        <span class="s0">this</span><span class="s1">.direccionUsuario = direccionUsuario</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getNumeroUsuario() {</span>
+        <span class="s0">return </span><span class="s1">numeroUsuario</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setNumeroUsuario(String numeroUsuario) {</span>
+        <span class="s0">this</span><span class="s1">.numeroUsuario = numeroUsuario</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getImagen() {</span>
+        <span class="s0">return </span><span class="s1">imagen</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setImagen(String imagen) {</span>
+        <span class="s0">this</span><span class="s1">.imagen = imagen</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getOferta() {</span>
+        <span class="s0">return </span><span class="s1">oferta</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setOferta(String oferta) {</span>
+        <span class="s0">this</span><span class="s1">.oferta = oferta</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getPrecio() {</span>
+        <span class="s0">return </span><span class="s1">precio</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setPrecio(String precio) {</span>
+        <span class="s0">this</span><span class="s1">.precio = precio</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getFecha() {</span>
+        <span class="s0">return </span><span class="s1">fecha</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setFecha(String fecha) {</span>
+        <span class="s0">this</span><span class="s1">.fecha = fecha</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getHora() {</span>
+        <span class="s0">return </span><span class="s1">hora</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setHora(String hora) {</span>
+        <span class="s0">this</span><span class="s1">.hora = hora</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getLugar() {</span>
+        <span class="s0">return </span><span class="s1">lugar</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setLugar(String lugar) {</span>
+        <span class="s0">this</span><span class="s1">.lugar = lugar</span><span class="s0">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

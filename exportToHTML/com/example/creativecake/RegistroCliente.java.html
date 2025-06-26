@@ -1,0 +1,107 @@
+<html>
+<head>
+<title>RegistroCliente.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #808080;}
+.s3 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+RegistroCliente.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.creativecake</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.content.Intent</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Button</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.EditText</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Toast</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.appcompat.app.AppCompatActivity</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.google.android.gms.common.data.DataBufferObserverSet</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.android.gms.tasks.OnSuccessListener</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DatabaseReference</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.FirebaseDatabase</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">RegistroCliente </span><span class="s0">extends </span><span class="s1">AppCompatActivity</span>
+<span class="s1">{</span>
+    <span class="s1">FirebaseDatabase database</span><span class="s0">;</span>
+    <span class="s1">DatabaseReference reference</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">EditText  etNombre</span><span class="s0">, </span><span class="s1">etCorreo</span><span class="s0">, </span><span class="s1">etPassword</span><span class="s0">, </span><span class="s1">etTelefono</span><span class="s0">, </span><span class="s1">etDireccion</span><span class="s0">, </span><span class="s1">etEdad</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">Button botonSiguiente</span><span class="s0">;</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState)</span>
+    <span class="s1">{</span>
+        <span class="s0">super</span><span class="s1">.onCreate(savedInstanceState)</span><span class="s0">;</span>
+        <span class="s1">setContentView(R.layout.activity_registro_cliente)</span><span class="s0">;</span>
+
+
+
+        <span class="s1">etNombre = (EditText)findViewById(R.id.idNombre)</span><span class="s0">;</span>
+        <span class="s1">etCorreo = (EditText)findViewById(R.id.idCorreo)</span><span class="s0">;</span>
+        <span class="s1">etPassword = (EditText)findViewById(R.id.idPassword)</span><span class="s0">;</span>
+        <span class="s1">etTelefono = (EditText)findViewById(R.id.idTelefono)</span><span class="s0">;</span>
+        <span class="s1">etDireccion = (EditText)findViewById(R.id.idDireccion)</span><span class="s0">;</span>
+        <span class="s1">etEdad = (EditText)findViewById(R.id.idEdad)</span><span class="s0">;</span>
+        <span class="s1">botonSiguiente = (Button)findViewById(R.id.botonSiguiente)</span><span class="s0">;</span>
+
+
+        <span class="s2">// Write a message to the database</span>
+        <span class="s1">botonSiguiente.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View view)</span>
+            <span class="s1">{</span>
+                <span class="s1">database = FirebaseDatabase.getInstance()</span><span class="s0">;</span>
+                <span class="s1">reference = database.getReference(</span><span class="s3">&quot;usuarioCliente&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">DatabaseReference ref2 = database.getReference().child(</span><span class="s3">&quot;carrito&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">DatabaseReference ref3 = database.getReference(</span><span class="s3">&quot;chat&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">DatabaseReference ref4 = database.getReference().child(</span><span class="s3">&quot;pagoCarrito&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">DatabaseReference ref5 = database.getReference().child(</span><span class="s3">&quot;cotizaciones&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+                <span class="s1">String nombre = etNombre.getText().toString()</span><span class="s0">;</span>
+                <span class="s1">String correo = etCorreo.getText().toString()</span><span class="s0">;</span>
+                <span class="s1">String password = etPassword.getText().toString()</span><span class="s0">;</span>
+                <span class="s1">String telefono = etTelefono.getText().toString()</span><span class="s0">;</span>
+                <span class="s1">String direccion = etDireccion.getText().toString()</span><span class="s0">;</span>
+                <span class="s1">String edad = etEdad.getText().toString()</span><span class="s0">;</span>
+
+                <span class="s1">UserHelperClass helperClass = </span><span class="s0">new </span><span class="s1">UserHelperClass(nombre</span><span class="s0">, </span><span class="s1">correo</span><span class="s0">,</span>
+                        <span class="s1">password</span><span class="s0">,</span><span class="s1">telefono</span><span class="s0">, </span><span class="s1">direccion</span><span class="s0">, </span><span class="s1">edad)</span><span class="s0">;</span>
+
+                <span class="s1">reference.child(telefono).setValue(helperClass)</span><span class="s0">;</span>
+                <span class="s1">ref2.child(telefono).child(</span><span class="s3">&quot;1&quot;</span><span class="s1">).setValue(</span><span class="s3">&quot; &quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">ref3.child(telefono).setValue(</span><span class="s3">&quot; &quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">ref4.child(telefono).child(</span><span class="s3">&quot;1&quot;</span><span class="s1">).setValue(</span><span class="s3">&quot; &quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">ref5.child(telefono).setValue(</span><span class="s3">&quot; &quot;</span><span class="s1">).addOnSuccessListener(</span><span class="s0">new </span><span class="s1">OnSuccessListener&lt;Void&gt;() {</span>
+                    <span class="s1">@Override</span>
+                    <span class="s0">public void </span><span class="s1">onSuccess(Void aVoid) {</span>
+                        <span class="s1">Toast.makeText(getApplicationContext()</span><span class="s0">, </span><span class="s3">&quot;Nuevo usuario registrado&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+                <span class="s1">})</span><span class="s0">;</span>
+
+                <span class="s1">Intent intent = </span><span class="s0">new </span><span class="s1">Intent(getApplicationContext()</span><span class="s0">, </span><span class="s1">MainActivity.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+
+                <span class="s1">Bundle bundle = </span><span class="s0">new </span><span class="s1">Bundle()</span><span class="s0">;</span>
+                <span class="s1">intent.putExtra(</span><span class="s3">&quot;nombre&quot;</span><span class="s0">, </span><span class="s1">nombre)</span><span class="s0">;</span>
+                <span class="s1">intent.putExtra(</span><span class="s3">&quot;password&quot;</span><span class="s0">, </span><span class="s1">password)</span><span class="s0">;</span>
+                <span class="s1">intent.putExtra(</span><span class="s3">&quot;correo&quot;</span><span class="s0">, </span><span class="s1">correo)</span><span class="s0">;</span>
+                <span class="s1">intent.putExtra(</span><span class="s3">&quot;telefono&quot;</span><span class="s0">, </span><span class="s1">telefono)</span><span class="s0">;</span>
+                <span class="s1">intent.putExtra(</span><span class="s3">&quot;direccion&quot;</span><span class="s0">, </span><span class="s1">direccion)</span><span class="s0">;</span>
+                <span class="s1">startActivity(intent)</span><span class="s0">;</span>
+                <span class="s1">finish()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+<span class="s1">}</span></pre>
+</body>
+</html>

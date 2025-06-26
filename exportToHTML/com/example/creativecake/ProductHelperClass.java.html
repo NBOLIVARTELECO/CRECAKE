@@ -1,0 +1,115 @@
+<html>
+<head>
+<title>ProductHelperClass.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+ProductHelperClass.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.creativecake</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">ProductHelperClass {</span>
+    <span class="s1">String nombre</span><span class="s0">, </span><span class="s1">precio</span><span class="s0">, </span><span class="s1">descripción</span><span class="s0">, </span><span class="s1">tipo</span><span class="s0">, </span><span class="s1">user_name</span><span class="s0">, </span><span class="s1">downloadUrl</span><span class="s0">, </span><span class="s1">cantidad</span><span class="s0">, </span><span class="s1">oferta</span><span class="s0">, </span><span class="s1">rating</span><span class="s0">;</span>
+
+    <span class="s0">public </span><span class="s1">ProductHelperClass() {</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">ProductHelperClass(String nombre</span><span class="s0">, </span><span class="s1">String precio</span><span class="s0">, </span><span class="s1">String descripción</span><span class="s0">,</span>
+                              <span class="s1">String tipo</span><span class="s0">, </span><span class="s1">String user_name</span><span class="s0">, </span><span class="s1">String downloadUrl</span><span class="s0">, </span><span class="s1">String cantidad</span><span class="s0">, </span><span class="s1">String oferta</span><span class="s0">, </span><span class="s1">String rating ) {</span>
+        <span class="s0">this</span><span class="s1">.nombre = nombre</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.precio = precio</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.descripción = descripción</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.tipo = tipo</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.user_name = user_name</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.downloadUrl = downloadUrl</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.cantidad = cantidad</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.oferta= oferta</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.rating=rating</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getNombre() {</span>
+        <span class="s0">return </span><span class="s1">nombre</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setNombre(String nombre) {</span>
+        <span class="s0">this</span><span class="s1">.nombre = nombre</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getPrecio() {</span>
+        <span class="s0">return </span><span class="s1">precio</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setPrecio(String precio) {</span>
+        <span class="s0">this</span><span class="s1">.precio = precio</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getDescripción() {</span>
+        <span class="s0">return </span><span class="s1">descripción</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setDescripción(String descripción) {</span>
+        <span class="s0">this</span><span class="s1">.descripción = descripción</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getTipo() {</span>
+        <span class="s0">return </span><span class="s1">tipo</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setTipo(String telefono) {</span>
+        <span class="s0">this</span><span class="s1">.tipo = tipo</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getUser_name() {</span>
+        <span class="s0">return </span><span class="s1">user_name</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setUser_name(String user_name) {</span>
+        <span class="s0">this</span><span class="s1">.tipo = user_name</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getDownloadUrl() {</span>
+        <span class="s0">return </span><span class="s1">downloadUrl</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setDownloadUrl(String downloadUrl) {</span>
+        <span class="s0">this</span><span class="s1">.downloadUrl = downloadUrl</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String cantidad() {</span>
+        <span class="s0">return </span><span class="s1">cantidad</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setCantidad(String cantidad) {</span>
+        <span class="s0">this</span><span class="s1">.cantidad = cantidad</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getCantidad() {</span>
+        <span class="s0">return </span><span class="s1">cantidad</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getOferta() {</span>
+        <span class="s0">return </span><span class="s1">oferta</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setOferta(String oferta) {</span>
+        <span class="s0">this</span><span class="s1">.oferta = oferta</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getRating() {</span>
+        <span class="s0">return </span><span class="s1">rating</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setRating(String rating) {</span>
+        <span class="s0">this</span><span class="s1">.rating = rating</span><span class="s0">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

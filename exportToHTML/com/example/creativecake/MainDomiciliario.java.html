@@ -1,0 +1,92 @@
+<html>
+<head>
+<title>MainDomiciliario.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+MainDomiciliario.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.creativecake</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.appcompat.app.AppCompatActivity</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.fragment.app.Fragment</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.fragment.app.FragmentManager</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.fragment.app.FragmentTransaction</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.content.Context</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.graphics.Color</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.Window</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Button</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">MainDomiciliario </span><span class="s0">extends </span><span class="s1">AppCompatActivity {</span>
+
+    <span class="s0">private </span><span class="s1">Window window</span><span class="s0">;</span>
+
+    <span class="s1">Button disponibles</span><span class="s0">, </span><span class="s1">activos</span><span class="s0">, </span><span class="s1">historial</span><span class="s0">;</span>
+
+    <span class="s0">public static </span><span class="s1">Context contextOfApplication</span><span class="s0">;</span>
+
+    <span class="s0">public static </span><span class="s1">Context getContextOfApplication(){</span>
+        <span class="s0">return </span><span class="s1">contextOfApplication</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s1">FragmentManager fragmentManager</span><span class="s0">;</span>
+    <span class="s1">FragmentTransaction fragmentTransaction</span><span class="s0">;</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onCreate(savedInstanceState)</span><span class="s0">;</span>
+        <span class="s1">setContentView(R.layout.activity_main_domiciliario)</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.window = getWindow()</span><span class="s0">;</span>
+        <span class="s1">cambiarColor()</span><span class="s0">;</span>
+
+        <span class="s1">disponibles = (Button) findViewById(R.id.ped_disponibles)</span><span class="s0">;</span>
+        <span class="s1">activos = (Button) findViewById(R.id.ped_activos)</span><span class="s0">;</span>
+        <span class="s1">historial = (Button) findViewById(R.id.historial)</span><span class="s0">;</span>
+
+        <span class="s1">fragmentManager = getSupportFragmentManager()</span><span class="s0">;</span>
+        <span class="s1">fragmentTransaction = fragmentManager.beginTransaction()</span><span class="s0">;</span>
+
+        <span class="s0">final </span><span class="s1">InicioDomiciliarioFragment fragment1 = </span><span class="s0">new </span><span class="s1">InicioDomiciliarioFragment()</span><span class="s0">;</span>
+        <span class="s0">final </span><span class="s1">UbicacionDomiciliario fragment2 = </span><span class="s0">new </span><span class="s1">UbicacionDomiciliario()</span><span class="s0">;</span>
+
+        <span class="s1">fragmentTransaction.add(R.id.fragment3</span><span class="s0">, </span><span class="s1">fragment1)</span><span class="s0">;</span>
+        <span class="s1">fragmentTransaction.commit()</span><span class="s0">;</span>
+
+        <span class="s1">disponibles.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                <span class="s1">FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()</span><span class="s0">;</span>
+                <span class="s1">fragmentTransaction.replace(R.id.fragment3</span><span class="s0">, </span><span class="s1">fragment1)</span><span class="s0">;</span>
+                <span class="s1">fragmentTransaction.addToBackStack(</span><span class="s0">null</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">fragmentTransaction.commit()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">activos.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                <span class="s1">FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()</span><span class="s0">;</span>
+                <span class="s1">fragmentTransaction.replace(R.id.fragment3</span><span class="s0">, </span><span class="s1">fragment2)</span><span class="s0">;</span>
+                <span class="s1">fragmentTransaction.addToBackStack(</span><span class="s0">null</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">fragmentTransaction.commit()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">cambiarColor(){</span>
+        <span class="s1">window.setStatusBarColor(Color.parseColor(</span><span class="s2">&quot;#BF5A7F&quot;</span><span class="s1">))</span><span class="s0">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span></pre>
+</body>
+</html>

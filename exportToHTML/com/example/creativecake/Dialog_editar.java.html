@@ -1,0 +1,146 @@
+<html>
+<head>
+<title>Dialog_editar.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Dialog_editar.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.creativecake</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.app.Dialog</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.Context</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.Window</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ArrayAdapter</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Button</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.EditText</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ImageView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.RatingBar</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Spinner</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.TextView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Toast</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.annotation.NonNull</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.google.android.gms.tasks.OnFailureListener</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.android.gms.tasks.OnSuccessListener</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DataSnapshot</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DatabaseError</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DatabaseReference</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.FirebaseDatabase</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.Query</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.ValueEventListener</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.squareup.picasso.Picasso</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.util.HashMap</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.Map</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">Dialog_editar {</span>
+    <span class="s1">producto_ejemplo producto</span><span class="s0">;</span>
+    <span class="s1">EditText nombre_producto</span><span class="s0">, </span><span class="s1">precio_producto</span><span class="s0">, </span><span class="s1">descripcionProducto</span><span class="s0">, </span><span class="s1">ofertaProducto</span><span class="s0">,</span><span class="s1">cantidadProducto</span><span class="s0">;</span>
+    <span class="s1">Spinner tipo_producto</span><span class="s0">;</span>
+    <span class="s1">DatabaseReference reference</span><span class="s0">;</span>
+    <span class="s1">String clave</span><span class="s0">;</span>
+
+    <span class="s0">public </span><span class="s1">Dialog_editar(){}</span>
+
+    <span class="s0">public </span><span class="s1">Dialog_editar(</span><span class="s0">final </span><span class="s1">Context context</span><span class="s0">, final </span><span class="s1">producto_ejemplo producto){</span>
+
+        <span class="s0">this</span><span class="s1">.producto= producto</span><span class="s0">;</span>
+
+        <span class="s0">final </span><span class="s1">Dialog dialog = </span><span class="s0">new </span><span class="s1">Dialog(context)</span><span class="s0">;</span>
+        <span class="s1">dialog.requestWindowFeature((Window.FEATURE_NO_TITLE))</span><span class="s0">;</span>
+        <span class="s1">dialog.setCancelable(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">dialog.setContentView(R.layout.dialog_editar)</span><span class="s0">;</span>
+
+        <span class="s1">Button btn_cancelar = (Button) dialog.findViewById(R.id.btn_cancel)</span><span class="s0">;</span>
+        <span class="s1">Button btn_actualizar = (Button) dialog.findViewById(R.id.btn_actualizar)</span><span class="s0">;</span>
+
+        <span class="s1">nombre_producto = (EditText) dialog.findViewById(R.id.edit_product)</span><span class="s0">;</span>
+        <span class="s1">precio_producto = (EditText) dialog.findViewById(R.id.edit_precio)</span><span class="s0">;</span>
+        <span class="s1">tipo_producto = (Spinner) dialog.findViewById(R.id.edit_tipo)</span><span class="s0">;</span>
+        <span class="s1">descripcionProducto = (EditText) dialog.findViewById(R.id.edit_descripcion)</span><span class="s0">;</span>
+        <span class="s1">ofertaProducto = (EditText) dialog.findViewById(R.id.edit_oferta)</span><span class="s0">;</span>
+        <span class="s1">cantidadProducto = (EditText) dialog.findViewById(R.id.edit_Cantidad)</span><span class="s0">;</span>
+
+        <span class="s1">ArrayAdapter&lt;CharSequence&gt; adapter = ArrayAdapter.createFromResource(context</span><span class="s0">,</span>
+                <span class="s1">R.array.Tipo_producto</span><span class="s0">, </span><span class="s1">android.R.layout.simple_spinner_item)</span><span class="s0">;</span>
+
+        <span class="s1">tipo_producto.setAdapter(adapter)</span><span class="s0">;</span>
+
+
+        <span class="s1">nombre_producto.setHint(producto.getNombre())</span><span class="s0">;</span>
+        <span class="s1">precio_producto.setHint(producto.getPrecio())</span><span class="s0">;</span>
+        <span class="s1">descripcionProducto.setHint(producto.getDescripción())</span><span class="s0">;</span>
+        <span class="s1">ofertaProducto.setHint(producto.getOferta())</span><span class="s0">;</span>
+        <span class="s1">cantidadProducto.setHint(producto.getCantidad())</span><span class="s0">;</span>
+
+        <span class="s1">reference = FirebaseDatabase.getInstance().getReference(</span><span class="s2">&quot;productoTienda&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">Query updateTienda = reference.orderByChild(</span><span class="s2">&quot;nombre&quot;</span><span class="s1">).equalTo(producto.getNombre())</span><span class="s0">;</span>
+        <span class="s1">updateTienda.addListenerForSingleValueEvent(</span><span class="s0">new </span><span class="s1">ValueEventListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onDataChange(@NonNull DataSnapshot snapshot) {</span>
+                <span class="s0">for </span><span class="s1">(DataSnapshot ds: snapshot.getChildren()) {</span>
+                    <span class="s0">if </span><span class="s1">(ds.child(</span><span class="s2">&quot;user_name&quot;</span><span class="s1">).getValue().equals(producto.getUser_name())) {</span>
+                        <span class="s1">clave= ds.getKey()</span><span class="s0">;</span>
+                        <span class="s0">break;</span>
+                    <span class="s1">}</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onCancelled(@NonNull DatabaseError error) {</span>
+
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">btn_actualizar.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                <span class="s1">Map &lt; String</span><span class="s0">, </span><span class="s1">Object &gt; usuarioMap = </span><span class="s0">new </span><span class="s1">HashMap&lt;&gt;()</span><span class="s0">;</span>
+                <span class="s1">usuarioMap.put(</span><span class="s2">&quot;cantidad&quot;</span><span class="s0">,</span><span class="s1">cantidadProducto.getText().toString())</span><span class="s0">;</span>
+                <span class="s1">usuarioMap.put(</span><span class="s2">&quot;descripción&quot;</span><span class="s0">, </span><span class="s1">descripcionProducto.getText().toString())</span><span class="s0">;</span>
+                <span class="s1">usuarioMap.put(</span><span class="s2">&quot;nombre&quot;</span><span class="s0">,</span><span class="s1">nombre_producto.getText().toString())</span><span class="s0">;</span>
+                <span class="s1">usuarioMap.put(</span><span class="s2">&quot;oferta&quot;</span><span class="s0">, </span><span class="s1">ofertaProducto.getText().toString())</span><span class="s0">;</span>
+                <span class="s1">usuarioMap.put(</span><span class="s2">&quot;precio&quot;</span><span class="s0">, </span><span class="s1">precio_producto.getText().toString())</span><span class="s0">;</span>
+                <span class="s1">usuarioMap.put(</span><span class="s2">&quot;tipo&quot;</span><span class="s0">,</span><span class="s1">tipo_producto.getItemAtPosition(tipo_producto.getSelectedItemPosition()).toString())</span><span class="s0">;</span>
+
+                <span class="s1">reference.child(clave).updateChildren(usuarioMap).addOnSuccessListener(</span><span class="s0">new </span><span class="s1">OnSuccessListener&lt;Void&gt;() {</span>
+                    <span class="s1">@Override</span>
+                    <span class="s0">public void </span><span class="s1">onSuccess(Void aVoid) {</span>
+                        <span class="s1">Toast.makeText(context</span><span class="s0">, </span><span class="s2">&quot;Cambios guardados&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                        <span class="s1">dialog.dismiss()</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+                <span class="s1">}).addOnFailureListener(</span><span class="s0">new </span><span class="s1">OnFailureListener() {</span>
+                    <span class="s1">@Override</span>
+                    <span class="s0">public void </span><span class="s1">onFailure(@NonNull Exception e) {</span>
+                        <span class="s1">Toast.makeText(context</span><span class="s0">, </span><span class="s2">&quot;Error al actualizar los datos&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                        <span class="s1">dialog.dismiss()</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+                <span class="s1">})</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">btn_cancelar.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+
+                <span class="s1">dialog.dismiss()</span><span class="s0">;</span>
+
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">dialog.show()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

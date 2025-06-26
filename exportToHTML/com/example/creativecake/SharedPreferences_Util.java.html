@@ -1,0 +1,68 @@
+<html>
+<head>
+<title>SharedPreferences_Util.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+SharedPreferences_Util.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.creativecake</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.content.Context</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.SharedPreferences</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.preference.PreferenceManager</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">SharedPreferences_Util {</span>
+
+    <span class="s0">public </span><span class="s1">SharedPreferences_Util(){</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public static boolean </span><span class="s1">savePhone_SP(String phone</span><span class="s0">, </span><span class="s1">Context context){</span>
+        <span class="s1">SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context)</span><span class="s0">;</span>
+        <span class="s1">SharedPreferences.Editor prefsEditor = prefs.edit()</span><span class="s0">;</span>
+        <span class="s1">prefsEditor.putString(SharedPreferences_Constantes.KEY_PHONE</span><span class="s0">, </span><span class="s1">phone)</span><span class="s0">;</span>
+        <span class="s1">prefsEditor.apply()</span><span class="s0">;</span>
+        <span class="s0">return true;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public static </span><span class="s1">String getPhone_SP(Context context){</span>
+        <span class="s1">SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context)</span><span class="s0">;</span>
+        <span class="s0">return </span><span class="s1">prefs.getString(SharedPreferences_Constantes.KEY_PHONE</span><span class="s0">, null</span><span class="s1">)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public static boolean </span><span class="s1">savePassword_SP(String password</span><span class="s0">, </span><span class="s1">Context context){</span>
+        <span class="s1">SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context)</span><span class="s0">;</span>
+        <span class="s1">SharedPreferences.Editor prefsEditor = prefs.edit()</span><span class="s0">;</span>
+        <span class="s1">prefsEditor.putString(SharedPreferences_Constantes.KEY_PASSWORD</span><span class="s0">, </span><span class="s1">password)</span><span class="s0">;</span>
+        <span class="s1">prefsEditor.apply()</span><span class="s0">;</span>
+        <span class="s0">return true;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public static </span><span class="s1">String getPassword_SP(Context context){</span>
+        <span class="s1">SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context)</span><span class="s0">;</span>
+        <span class="s0">return </span><span class="s1">prefs.getString(SharedPreferences_Constantes.KEY_PASSWORD</span><span class="s0">, null</span><span class="s1">)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public static boolean </span><span class="s1">saveType_SP(String phone</span><span class="s0">, </span><span class="s1">Context context){</span>
+        <span class="s1">SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context)</span><span class="s0">;</span>
+        <span class="s1">SharedPreferences.Editor prefsEditor = prefs.edit()</span><span class="s0">;</span>
+        <span class="s1">prefsEditor.putString(SharedPreferences_Constantes.KEY_TYPE</span><span class="s0">, </span><span class="s1">phone)</span><span class="s0">;</span>
+        <span class="s1">prefsEditor.apply()</span><span class="s0">;</span>
+        <span class="s0">return true;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public static </span><span class="s1">String getType_SP(Context context){</span>
+        <span class="s1">SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context)</span><span class="s0">;</span>
+        <span class="s0">return </span><span class="s1">prefs.getString(SharedPreferences_Constantes.KEY_TYPE</span><span class="s0">, null</span><span class="s1">)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<html>
+<head>
+<title>Dialog_entregado.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Dialog_entregado.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.creativecake</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.app.Dialog</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.ClipData</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.Context</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.Window</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Button</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.TextView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Toast</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.annotation.NonNull</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.google.android.gms.tasks.OnFailureListener</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.android.gms.tasks.OnSuccessListener</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DataSnapshot</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DatabaseError</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DatabaseReference</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.FirebaseDatabase</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.Query</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.ValueEventListener</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">Dialog_entregado {</span>
+    <span class="s1">ItemHelperClass producto</span><span class="s0">;</span>
+    <span class="s1">String telefono</span><span class="s0">;</span>
+    <span class="s1">Button si</span><span class="s0">, </span><span class="s1">no</span><span class="s0">;</span>
+    <span class="s1">DatabaseReference datos</span><span class="s0">;</span>
+
+    <span class="s0">public </span><span class="s1">Dialog_entregado(</span><span class="s0">final </span><span class="s1">Context context</span><span class="s0">,final </span><span class="s1">ItemHelperClass producto</span><span class="s0">, final </span><span class="s1">String telefono) {</span>
+        <span class="s0">this</span><span class="s1">.producto = producto</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.telefono = telefono</span><span class="s0">;</span>
+
+        <span class="s0">final </span><span class="s1">Dialog dialog = </span><span class="s0">new </span><span class="s1">Dialog(context)</span><span class="s0">;</span>
+        <span class="s1">dialog.requestWindowFeature((Window.FEATURE_NO_TITLE))</span><span class="s0">;</span>
+        <span class="s1">dialog.setCancelable(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">dialog.setContentView(R.layout.dialog_entregado)</span><span class="s0">;</span>
+
+        <span class="s1">no = (Button) dialog.findViewById(R.id.btn_NO)</span><span class="s0">;</span>
+        <span class="s1">si = (Button) dialog.findViewById(R.id.btn_SI)</span><span class="s0">;</span>
+
+        <span class="s1">si.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                <span class="s0">try</span><span class="s1">{</span>
+                    <span class="s1">datos= FirebaseDatabase.getInstance().getReference().child(</span><span class="s2">&quot;Ventas&quot;</span><span class="s1">).child(telefono)</span><span class="s0">;</span>
+                    <span class="s1">System.out.println(telefono)</span><span class="s0">;</span>
+                    <span class="s1">Query deleteTienda = datos.orderByChild(</span><span class="s2">&quot;producto&quot;</span><span class="s1">).equalTo(producto.getProducto())</span><span class="s0">;</span>
+                    <span class="s1">deleteTienda.addListenerForSingleValueEvent(</span><span class="s0">new </span><span class="s1">ValueEventListener() {</span>
+                        <span class="s1">@Override</span>
+                        <span class="s0">public void </span><span class="s1">onDataChange(@NonNull DataSnapshot snapshot) {</span>
+                            <span class="s0">for </span><span class="s1">(DataSnapshot ds: snapshot.getChildren()) {</span>
+                                <span class="s1">String clave= ds.getKey()</span><span class="s0">;</span>
+                                <span class="s1">System.out.println(clave)</span><span class="s0">;</span>
+                                <span class="s1">datos.child(clave).removeValue().addOnSuccessListener(</span><span class="s0">new </span><span class="s1">OnSuccessListener&lt;Void&gt;() {</span>
+                                    <span class="s1">@Override</span>
+                                    <span class="s0">public void </span><span class="s1">onSuccess(Void aVoid) {</span>
+                                        <span class="s1">Toast.makeText(context</span><span class="s0">, </span><span class="s2">&quot;¡Gracias por cumplir con tu pedido!&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                                        <span class="s1">dialog.dismiss()</span><span class="s0">;</span>
+                                    <span class="s1">}</span>
+                                <span class="s1">}).addOnFailureListener(</span><span class="s0">new </span><span class="s1">OnFailureListener() {</span>
+                                    <span class="s1">@Override</span>
+                                    <span class="s0">public void </span><span class="s1">onFailure(@NonNull Exception e) {</span>
+                                        <span class="s1">Toast.makeText(context</span><span class="s0">, </span><span class="s2">&quot;Error al buscar el producto&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                                        <span class="s1">dialog.dismiss()</span><span class="s0">;</span>
+                                    <span class="s1">}</span>
+                                <span class="s1">})</span><span class="s0">;</span>
+                            <span class="s1">}</span>
+                        <span class="s1">}</span>
+
+                        <span class="s1">@Override</span>
+                        <span class="s0">public void </span><span class="s1">onCancelled(@NonNull DatabaseError error) {</span>
+
+                        <span class="s1">}</span>
+                    <span class="s1">})</span><span class="s0">;</span>
+                <span class="s1">}</span><span class="s0">catch </span><span class="s1">(Exception e){</span>
+                    <span class="s1">Toast.makeText(context</span><span class="s0">, </span><span class="s2">&quot;No se encuentra el producto&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                <span class="s1">}</span>
+
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">no.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                <span class="s1">dialog.dismiss()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">dialog.show()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

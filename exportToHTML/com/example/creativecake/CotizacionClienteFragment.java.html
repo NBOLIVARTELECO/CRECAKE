@@ -1,0 +1,290 @@
+<html>
+<head>
+<title>CotizacionClienteFragment.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #808080;}
+.s3 { color: #6a8759;}
+.s4 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+CotizacionClienteFragment.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.creativecake</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.app.DatePickerDialog</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.app.TimePickerDialog</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.Context</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.Intent</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Build</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.annotation.NonNull</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.annotation.Nullable</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.annotation.RequiresApi</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.fragment.app.Fragment</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.navigation.NavController</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.navigation.Navigation</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.view.LayoutInflater</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.ViewGroup</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ArrayAdapter</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Button</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.DatePicker</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.EditText</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ImageButton</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Spinner</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.TimePicker</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Toast</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.google.android.gms.tasks.OnSuccessListener</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DataSnapshot</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DatabaseError</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DatabaseReference</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.FirebaseDatabase</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.ValueEventListener</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.util.Calendar</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">CotizacionClienteFragment </span><span class="s0">extends </span><span class="s1">Fragment {</span>
+
+    <span class="s1">FirebaseDatabase database</span><span class="s0">;</span>
+    <span class="s1">DatabaseReference reference</span><span class="s0">, </span><span class="s1">datosUsuario</span><span class="s0">;</span>
+    <span class="s1">UserHelperClass usuario</span><span class="s0">;</span>
+    <span class="s1">Boolean n</span><span class="s0">;</span>
+
+    <span class="s1">EditText nombre_cotizacion</span><span class="s0">, </span><span class="s1">precio</span><span class="s0">, </span><span class="s1">especificaciones</span><span class="s0">;</span>
+    <span class="s1">Button fecha</span><span class="s0">, </span><span class="s1">hora</span><span class="s0">;</span>
+    <span class="s1">Spinner tamaño</span><span class="s0">;</span>
+    <span class="s1">Spinner cobertura</span><span class="s0">;</span>
+    <span class="s1">Spinner sabor</span><span class="s0">;</span>
+    <span class="s1">Spinner decoración</span><span class="s0">;</span>
+    <span class="s1">String telefono</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">Context globalContext = </span><span class="s0">null;</span>
+    <span class="s1">View vista</span><span class="s0">;</span>
+
+    <span class="s0">public </span><span class="s1">CotizacionClienteFragment() {</span>
+        <span class="s2">// Required empty public constructor</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public static </span><span class="s1">CotizacionClienteFragment newInstance(String param1</span><span class="s0">, </span><span class="s1">String param2) {</span>
+        <span class="s1">CotizacionClienteFragment fragment = </span><span class="s0">new </span><span class="s1">CotizacionClienteFragment()</span><span class="s0">;</span>
+        <span class="s1">Bundle args = </span><span class="s0">new </span><span class="s1">Bundle()</span><span class="s0">;</span>
+        <span class="s1">fragment.setArguments(args)</span><span class="s0">;</span>
+        <span class="s0">return </span><span class="s1">fragment</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onCreate(Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onCreate(savedInstanceState)</span><span class="s0">;</span>
+        <span class="s0">if </span><span class="s1">(getArguments() != </span><span class="s0">null</span><span class="s1">) {</span>
+
+        <span class="s1">}</span>
+        <span class="s1">globalContext = </span><span class="s0">this</span><span class="s1">.getActivity()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">View onCreateView(LayoutInflater inflater</span><span class="s0">, </span><span class="s1">ViewGroup container</span><span class="s0">,</span>
+                             <span class="s1">Bundle savedInstanceState) {</span>
+        <span class="s1">vista = inflater.inflate(R.layout.fragment_cotizacion_cliente</span><span class="s0">, </span><span class="s1">container</span><span class="s0">, false</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s0">return </span><span class="s1">vista</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onViewCreated(@NonNull View view</span><span class="s0">, </span><span class="s1">@Nullable Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onViewCreated(view</span><span class="s0">, </span><span class="s1">savedInstanceState)</span><span class="s0">;</span>
+
+        <span class="s1">telefono = SharedPreferences_Util.getPhone_SP(globalContext)</span><span class="s0">;</span>
+
+        <span class="s1">Button boton_enviar_coti= vista.findViewById(R.id.btn_enviar)</span><span class="s0">;</span>
+        <span class="s1">Button boton_revisar_coti= vista.findViewById(R.id.btn_revisar)</span><span class="s0">;</span>
+
+        <span class="s1">nombre_cotizacion = (EditText) vista.findViewById(R.id.editNombreCotizacion)</span><span class="s0">;</span>
+        <span class="s1">decoración = (Spinner) vista.findViewById(R.id.decoracion)</span><span class="s0">;</span>
+        <span class="s1">sabor = (Spinner) vista.findViewById(R.id.sabor)</span><span class="s0">;</span>
+        <span class="s1">cobertura = (Spinner) vista.findViewById(R.id.cobertura)</span><span class="s0">;</span>
+        <span class="s1">tamaño = (Spinner) vista.findViewById(R.id.tamaño)</span><span class="s0">;</span>
+        <span class="s1">precio = (EditText) vista.findViewById(R.id.editPrecio)</span><span class="s0">;</span>
+        <span class="s1">fecha = (Button) vista.findViewById(R.id.editFecha)</span><span class="s0">;</span>
+        <span class="s1">hora = (Button) vista.findViewById(R.id.editHora)</span><span class="s0">;</span>
+        <span class="s1">especificaciones = (EditText) vista.findViewById(R.id.editTextTextMultiLine)</span><span class="s0">;</span>
+
+        <span class="s1">fecha.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@RequiresApi(api = Build.VERSION_CODES.N)</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                <span class="s0">final </span><span class="s1">Calendar c = Calendar.getInstance()</span><span class="s0">;</span>
+                <span class="s0">int </span><span class="s1">dia = c.get(Calendar.DAY_OF_MONTH)</span><span class="s0">;</span>
+                <span class="s0">int </span><span class="s1">mes = c.get(Calendar.MONTH)</span><span class="s0">;</span>
+                <span class="s0">int </span><span class="s1">año = c.get(Calendar.YEAR)</span><span class="s0">;</span>
+
+                <span class="s1">DatePickerDialog calendario = </span><span class="s0">new </span><span class="s1">DatePickerDialog(globalContext</span><span class="s0">, new </span><span class="s1">DatePickerDialog.OnDateSetListener() {</span>
+                    <span class="s1">@Override</span>
+                    <span class="s0">public void </span><span class="s1">onDateSet(DatePicker view</span><span class="s0">, int </span><span class="s1">year</span><span class="s0">, int </span><span class="s1">month</span><span class="s0">, int </span><span class="s1">dayOfMonth) {</span>
+                        <span class="s1">fecha.setText(dayOfMonth+</span><span class="s3">&quot;/&quot;</span><span class="s1">+(month+</span><span class="s4">1</span><span class="s1">)+</span><span class="s3">&quot;/&quot;</span><span class="s1">+year)</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+                <span class="s1">}</span><span class="s0">, </span><span class="s1">dia</span><span class="s0">, </span><span class="s1">mes</span><span class="s0">, </span><span class="s1">año)</span><span class="s0">;</span>
+
+                <span class="s1">calendario.show()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">hora.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                <span class="s0">final </span><span class="s1">Calendar c = Calendar.getInstance()</span><span class="s0">;</span>
+                <span class="s0">int </span><span class="s1">horaS = c.get(Calendar.HOUR_OF_DAY)</span><span class="s0">;</span>
+                <span class="s0">int </span><span class="s1">minutos = c.get(Calendar.MINUTE)</span><span class="s0">;</span>
+
+                <span class="s1">TimePickerDialog tiempo = </span><span class="s0">new </span><span class="s1">TimePickerDialog(globalContext</span><span class="s0">, new </span><span class="s1">TimePickerDialog.OnTimeSetListener() {</span>
+                    <span class="s1">@Override</span>
+                    <span class="s0">public void </span><span class="s1">onTimeSet(TimePicker view</span><span class="s0">, int </span><span class="s1">hourOfDay</span><span class="s0">, int </span><span class="s1">minute) {</span>
+                        <span class="s1">hora.setText(hourOfDay+</span><span class="s3">&quot;:&quot;</span><span class="s1">+minute)</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+                <span class="s1">}</span><span class="s0">, </span><span class="s1">horaS</span><span class="s0">, </span><span class="s1">minutos</span><span class="s0">, true</span><span class="s1">)</span><span class="s0">;</span>
+
+                <span class="s1">tiempo.show()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+
+        <span class="s0">final </span><span class="s1">NavController navController= Navigation.findNavController(view)</span><span class="s0">;</span>
+
+        <span class="s1">boton_enviar_coti.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                <span class="s1">datosUser()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+
+        <span class="s1">boton_revisar_coti.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                <span class="s1">navController.navigate(R.id.revisarCotiClienteFragment)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">tamaño= (Spinner)vista.findViewById(R.id.tamaño)</span><span class="s0">;</span>
+        <span class="s1">ArrayAdapter&lt;CharSequence&gt; adapter1=ArrayAdapter.createFromResource(getContext()</span><span class="s0">, </span><span class="s1">R.array.tamaño</span><span class="s0">, </span><span class="s1">android.R.layout.simple_spinner_item)</span><span class="s0">;</span>
+        <span class="s1">tamaño.setAdapter(adapter1)</span><span class="s0">;</span>
+
+        <span class="s1">cobertura= (Spinner)vista.findViewById(R.id.cobertura)</span><span class="s0">;</span>
+        <span class="s1">ArrayAdapter&lt;CharSequence&gt; adapter2=ArrayAdapter.createFromResource(getContext()</span><span class="s0">, </span><span class="s1">R.array.cobertura</span><span class="s0">, </span><span class="s1">android.R.layout.simple_spinner_item)</span><span class="s0">;</span>
+        <span class="s1">cobertura.setAdapter(adapter2)</span><span class="s0">;</span>
+
+        <span class="s1">sabor= (Spinner)vista.findViewById(R.id.sabor)</span><span class="s0">;</span>
+        <span class="s1">ArrayAdapter&lt;CharSequence&gt; adapter3=ArrayAdapter.createFromResource(getContext()</span><span class="s0">, </span><span class="s1">R.array.sabor</span><span class="s0">, </span><span class="s1">android.R.layout.simple_spinner_item)</span><span class="s0">;</span>
+        <span class="s1">sabor.setAdapter(adapter3)</span><span class="s0">;</span>
+
+        <span class="s1">decoración= (Spinner)vista.findViewById(R.id.decoracion)</span><span class="s0">;</span>
+        <span class="s1">ArrayAdapter&lt;CharSequence&gt; adapter4=ArrayAdapter.createFromResource(getContext()</span><span class="s0">, </span><span class="s1">R.array.decoracion</span><span class="s0">, </span><span class="s1">android.R.layout.simple_spinner_item)</span><span class="s0">;</span>
+        <span class="s1">decoración.setAdapter(adapter4)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">datosUser(){</span>
+        <span class="s1">n=</span><span class="s0">false;</span>
+        <span class="s1">datosUsuario= FirebaseDatabase.getInstance().getReference(</span><span class="s3">&quot;usuarioCliente&quot;</span><span class="s1">).child(telefono)</span><span class="s0">;</span>
+        <span class="s1">datosUsuario.addListenerForSingleValueEvent(</span><span class="s0">new </span><span class="s1">ValueEventListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onDataChange(@NonNull DataSnapshot snapshot) {</span>
+                <span class="s1">usuario =snapshot.getValue(UserHelperClass.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s0">try </span><span class="s1">{</span>
+                    <span class="s1">System.out.println(usuario.getNombre())</span><span class="s0">;</span>
+                    <span class="s1">n=</span><span class="s0">true;</span>
+                    <span class="s1">subirCoti()</span><span class="s0">;</span>
+                <span class="s1">}</span><span class="s0">catch </span><span class="s1">(Exception e){</span>
+                    <span class="s1">e.printStackTrace()</span><span class="s0">;</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onCancelled(@NonNull DatabaseError error) {</span>
+
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">subirCoti(){</span>
+        <span class="s0">final </span><span class="s1">String nombre_ = nombre_cotizacion.getText().toString()</span><span class="s0">;</span>
+        <span class="s0">final </span><span class="s1">String decoracion_ = decoración.getSelectedItem().toString()</span><span class="s0">;</span>
+        <span class="s0">final </span><span class="s1">String sabor_ = sabor.getSelectedItem().toString()</span><span class="s0">;</span>
+        <span class="s0">final </span><span class="s1">String cobertura_ = cobertura.getSelectedItem().toString()</span><span class="s0">;</span>
+        <span class="s0">final </span><span class="s1">String tamaño_ = tamaño.getSelectedItem().toString()</span><span class="s0">;</span>
+        <span class="s0">final </span><span class="s1">String precio_ = precio.getText().toString()</span><span class="s0">;</span>
+        <span class="s0">final </span><span class="s1">String fecha_ = fecha.getText().toString()</span><span class="s0">;</span>
+        <span class="s0">final </span><span class="s1">String hora_ = hora.getText().toString()</span><span class="s0">;</span>
+        <span class="s0">final </span><span class="s1">String especificaciones_ = especificaciones.getText().toString()</span><span class="s0">;</span>
+
+        <span class="s1">database = FirebaseDatabase.getInstance()</span><span class="s0">;</span>
+        <span class="s1">reference = database.getReference(</span><span class="s3">&quot;cotizaciones&quot;</span><span class="s1">).child(telefono)</span><span class="s0">;</span>
+        <span class="s1">System.out.println(telefono)</span><span class="s0">;</span>
+        <span class="s1">reference.addListenerForSingleValueEvent(</span><span class="s0">new </span><span class="s1">ValueEventListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onDataChange(@NonNull DataSnapshot snapshot) {</span>
+                <span class="s0">if</span><span class="s1">(!snapshot.getValue().equals(</span><span class="s3">&quot; &quot;</span><span class="s1">)){</span>
+                    <span class="s1">System.out.println(</span><span class="s3">&quot;entra a if&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">CotizacionHelperClass coti = snapshot.getValue(CotizacionHelperClass.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s0">if</span><span class="s1">(coti.getEstadoPago().equals(</span><span class="s3">&quot;PENDIENTE&quot;</span><span class="s1">)){</span>
+                        <span class="s1">Toast.makeText(getActivity()</span><span class="s0">, </span><span class="s3">&quot;Tienes una cotización pendiente&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+                    <span class="s0">else if </span><span class="s1">(coti.getEstadoPago().equals(</span><span class="s3">&quot;EN PROGRESO&quot;</span><span class="s1">)){</span>
+                        <span class="s1">Toast.makeText(getActivity()</span><span class="s0">, </span><span class="s3">&quot;Una repostería a aceptado tu pedido. ¡Revísalao!&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+                    <span class="s0">else</span><span class="s1">{</span>
+                        <span class="s0">final </span><span class="s1">CotizacionHelperClass helperClass = </span><span class="s0">new </span><span class="s1">CotizacionHelperClass(nombre_</span><span class="s0">,</span>
+                                <span class="s1">decoracion_</span><span class="s0">, </span><span class="s1">sabor_</span><span class="s0">, </span><span class="s1">cobertura_</span><span class="s0">, </span><span class="s1">tamaño_</span><span class="s0">, </span><span class="s1">precio_</span><span class="s0">, </span><span class="s1">fecha_</span><span class="s0">, </span><span class="s1">hora_</span><span class="s0">,</span><span class="s1">usuario.getDireccion()</span>
+                                <span class="s0">, </span><span class="s1">usuario.getTelefono()</span><span class="s0">, </span><span class="s1">usuario.getNombre()</span><span class="s0">,</span>
+                                <span class="s1">especificaciones_</span><span class="s0">,</span><span class="s3">&quot;PENDIENTE&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+                        <span class="s1">reference.setValue(helperClass).addOnSuccessListener(</span><span class="s0">new </span><span class="s1">OnSuccessListener&lt;Void&gt;() {</span>
+                            <span class="s1">@Override</span>
+                            <span class="s0">public void </span><span class="s1">onSuccess(Void aVoid) {</span>
+                                <span class="s1">nombre_cotizacion.setText(</span><span class="s3">&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                                <span class="s1">precio.setText(</span><span class="s3">&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                                <span class="s1">fecha.setText(</span><span class="s3">&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                                <span class="s1">hora.setText(</span><span class="s3">&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                                <span class="s1">especificaciones.setText(</span><span class="s3">&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                                <span class="s1">Toast.makeText(getActivity()</span><span class="s0">, </span><span class="s3">&quot;Cotización enviada&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                            <span class="s1">}</span>
+                        <span class="s1">})</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+                <span class="s1">}</span><span class="s0">else</span><span class="s1">{</span>
+                    <span class="s1">System.out.println(</span><span class="s3">&quot;entra a else&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">CotizacionHelperClass helperClass = </span><span class="s0">new </span><span class="s1">CotizacionHelperClass(nombre_</span><span class="s0">,</span>
+                            <span class="s1">decoracion_</span><span class="s0">, </span><span class="s1">sabor_</span><span class="s0">, </span><span class="s1">cobertura_</span><span class="s0">, </span><span class="s1">tamaño_</span><span class="s0">, </span><span class="s1">precio_</span><span class="s0">, </span><span class="s1">fecha_</span><span class="s0">, </span><span class="s1">hora_</span><span class="s0">,</span><span class="s1">usuario.getDireccion()</span>
+                            <span class="s0">, </span><span class="s1">usuario.getTelefono()</span><span class="s0">, </span><span class="s1">usuario.getNombre()</span><span class="s0">,</span>
+                            <span class="s1">especificaciones_</span><span class="s0">,</span><span class="s3">&quot;PENDIENTE&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+                    <span class="s1">reference.setValue(helperClass).addOnSuccessListener(</span><span class="s0">new </span><span class="s1">OnSuccessListener&lt;Void&gt;() {</span>
+                        <span class="s1">@Override</span>
+                        <span class="s0">public void </span><span class="s1">onSuccess(Void aVoid) {</span>
+                            <span class="s1">nombre_cotizacion.setText(</span><span class="s3">&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                            <span class="s1">precio.setText(</span><span class="s3">&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                            <span class="s1">fecha.setText(</span><span class="s3">&quot;FECHA DEL PEDIDO&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                            <span class="s1">hora.setText(</span><span class="s3">&quot;HORA DEL PEDIDO&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                            <span class="s1">especificaciones.setText(</span><span class="s3">&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                            <span class="s1">Toast.makeText(getActivity()</span><span class="s0">, </span><span class="s3">&quot;Cotización enviada&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                        <span class="s1">}</span>
+                    <span class="s1">})</span><span class="s0">;</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onCancelled(@NonNull DatabaseError error) {</span>
+
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+<span class="s1">}</span></pre>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<html>
+<head>
+<title>AdaptadorPedido.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+AdaptadorPedido.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.creativecake</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.LayoutInflater</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.ViewGroup</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ImageView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.RatingBar</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.TextView</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.annotation.NonNull</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.cardview.widget.CardView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.fragment.app.FragmentManager</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.navigation.Navigation</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.recyclerview.widget.RecyclerView</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.squareup.picasso.Picasso</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.util.ArrayList</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">AdaptadorPedido </span><span class="s0">extends </span><span class="s1">RecyclerView.Adapter&lt;AdaptadorPedido.pedidoViewHolder&gt;{</span>
+
+    <span class="s1">ArrayList&lt;producto_carrito&gt; listaPedido</span><span class="s0">;</span>
+    <span class="s1">FragmentManager fragmentManager</span><span class="s0">;</span>
+    <span class="s0">public </span><span class="s1">AdaptadorPedido(ArrayList&lt;producto_carrito&gt; listaPedido</span><span class="s0">, </span><span class="s1">FragmentManager fragmentManager) {</span>
+        <span class="s0">this</span><span class="s1">.listaPedido = listaPedido</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.fragmentManager = fragmentManager</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@NonNull</span>
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">pedidoViewHolder onCreateViewHolder(@NonNull ViewGroup parent</span><span class="s0">, int </span><span class="s1">viewType) {</span>
+        <span class="s1">View vista= LayoutInflater.from(parent.getContext()).inflate(R.layout.adapatador_pedido</span><span class="s0">,</span><span class="s1">parent</span><span class="s0">,false</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s0">return new </span><span class="s1">pedidoViewHolder(vista)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onBindViewHolder(@NonNull pedidoViewHolder holder</span><span class="s0">, int </span><span class="s1">position) {</span>
+
+        <span class="s0">final </span><span class="s1">producto_carrito pedido = listaPedido.get(position)</span><span class="s0">;</span>
+        <span class="s1">holder.nombre_usuario.setText(pedido.getNom_usuario())</span><span class="s0">;</span>
+        <span class="s1">holder.cantidad_carrito.setText(pedido.getCantidad())</span><span class="s0">;</span>
+        <span class="s1">holder.dir_usuario.setText(pedido.getDir_usuario())</span><span class="s0">;</span>
+
+        <span class="s1">holder.card.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                <span class="s1">Bundle result = </span><span class="s0">new </span><span class="s1">Bundle()</span><span class="s0">;</span>
+                <span class="s1">result.putString(</span><span class="s2">&quot;nom_user&quot;</span><span class="s0">, </span><span class="s1">pedido.getNom_usuario())</span><span class="s0">;</span>
+                <span class="s1">result.putString(</span><span class="s2">&quot;dir_user&quot;</span><span class="s0">, </span><span class="s1">pedido.getDir_usuario())</span><span class="s0">;</span>
+                <span class="s1">result.putString(</span><span class="s2">&quot;cantidad&quot;</span><span class="s0">, </span><span class="s1">pedido.getCantidad())</span><span class="s0">;</span>
+                <span class="s1">result.putString(</span><span class="s2">&quot;telefono&quot;</span><span class="s0">, </span><span class="s1">pedido.getTelefono())</span><span class="s0">;</span>
+                <span class="s1">fragmentManager.setFragmentResult(</span><span class="s2">&quot;key&quot;</span><span class="s0">, </span><span class="s1">result)</span><span class="s0">;</span>
+                <span class="s1">Navigation.findNavController(v).navigate(R.id.verCarritoDomiciliario)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public int </span><span class="s1">getItemCount() {</span>
+        <span class="s0">return </span><span class="s1">listaPedido.size()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public  class  </span><span class="s1">pedidoViewHolder </span><span class="s0">extends </span><span class="s1">RecyclerView.ViewHolder {</span>
+
+        <span class="s1">CardView card</span><span class="s0">;</span>
+        <span class="s1">TextView nombre_usuario</span><span class="s0">, </span><span class="s1">dir_usuario</span><span class="s0">, </span><span class="s1">cantidad_carrito</span><span class="s0">;</span>
+
+        <span class="s0">public </span><span class="s1">pedidoViewHolder(@NonNull View itemView) {</span>
+            <span class="s0">super</span><span class="s1">(itemView)</span><span class="s0">;</span>
+
+            <span class="s1">card =  itemView.findViewById(R.id.card_producto)</span><span class="s0">;</span>
+            <span class="s1">nombre_usuario= (TextView) itemView.findViewById(R.id.Nombre_cliente)</span><span class="s0">;</span>
+            <span class="s1">dir_usuario= (TextView) itemView.findViewById(R.id.Direccion_cliente)</span><span class="s0">;</span>
+            <span class="s1">cantidad_carrito= (TextView) itemView.findViewById(R.id.num_items)</span><span class="s0">;</span>
+
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

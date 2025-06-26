@@ -1,0 +1,108 @@
+<html>
+<head>
+<title>Dialog_confirmacion.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Dialog_confirmacion.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.creativecake</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.app.Dialog</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.Context</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.Window</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Button</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.TextView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Toast</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.annotation.NonNull</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DataSnapshot</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DatabaseError</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DatabaseReference</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.FirebaseDatabase</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.ValueEventListener</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">Dialog_confirmacion {</span>
+    <span class="s1">CotizacionHelperClass cotizacion</span><span class="s0">;</span>
+    <span class="s1">String telefono</span><span class="s0">;</span>
+    <span class="s1">StoreHelperClass tienda</span><span class="s0">;</span>
+    <span class="s1">Context globalContext</span><span class="s0">;</span>
+    <span class="s1">DatabaseReference ventas</span><span class="s0">, </span><span class="s1">domicilios</span><span class="s0">, </span><span class="s1">cotizaciones</span><span class="s0">, </span><span class="s1">chat</span><span class="s0">,</span><span class="s1">datosUsuario</span><span class="s0">, </span><span class="s1">cotiCliente</span><span class="s0">;</span>
+
+    <span class="s0">public </span><span class="s1">Dialog_confirmacion(</span><span class="s0">final </span><span class="s1">CotizacionHelperClass cotizacion</span><span class="s0">, final </span><span class="s1">String telefono</span><span class="s0">, final </span><span class="s1">Context globalContext) {</span>
+        <span class="s0">this</span><span class="s1">.cotizacion = cotizacion</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.telefono = telefono</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.globalContext = globalContext</span><span class="s0">;</span>
+
+        <span class="s0">final </span><span class="s1">Dialog dialog = </span><span class="s0">new </span><span class="s1">Dialog(globalContext)</span><span class="s0">;</span>
+        <span class="s1">dialog.requestWindowFeature((Window.FEATURE_NO_TITLE))</span><span class="s0">;</span>
+        <span class="s1">dialog.setCancelable(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">dialog.setContentView(R.layout.dialog_confirmacion)</span><span class="s0">;</span>
+
+        <span class="s1">domicilios= FirebaseDatabase.getInstance().getReference().child(</span><span class="s2">&quot;domicilios&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">ventas = FirebaseDatabase.getInstance().getReference().child(</span><span class="s2">&quot;Ventas&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">cotiCliente = FirebaseDatabase.getInstance().getReference().child(</span><span class="s2">&quot;cotizaciones&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">cotizaciones =FirebaseDatabase.getInstance().getReference().child(</span><span class="s2">&quot;cotiTienda&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">chat =FirebaseDatabase.getInstance().getReference().child(</span><span class="s2">&quot;chat&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">datosUsuario= FirebaseDatabase.getInstance().getReference(</span><span class="s2">&quot;usuarioNegocio&quot;</span><span class="s1">).child(telefono)</span><span class="s0">;</span>
+        <span class="s1">datosUsuario.addListenerForSingleValueEvent(</span><span class="s0">new </span><span class="s1">ValueEventListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onDataChange(@NonNull DataSnapshot snapshot) {</span>
+                <span class="s1">tienda =snapshot.getValue(StoreHelperClass.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s0">try </span><span class="s1">{</span>
+                    <span class="s1">System.out.println(tienda.getNombre())</span><span class="s0">;</span>
+                <span class="s1">}</span><span class="s0">catch </span><span class="s1">(Exception e){</span>
+                    <span class="s1">e.printStackTrace()</span><span class="s0">;</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onCancelled(@NonNull DatabaseError error) {</span>
+
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">Button btn_SI = (Button) dialog.findViewById(R.id.btn_SIpuedo)</span><span class="s0">;</span>
+        <span class="s1">Button btn_NO = (Button) dialog.findViewById(R.id.btn_NoPuedo)</span><span class="s0">;</span>
+        <span class="s1">TextView nombreCoti = (TextView) dialog.findViewById(R.id.nomCoti)</span><span class="s0">;</span>
+
+        <span class="s1">nombreCoti.setText(cotizacion.getNombre())</span><span class="s0">;</span>
+
+        <span class="s1">btn_SI.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                <span class="s1">ItemHelperClass producto = </span><span class="s0">new </span><span class="s1">ItemHelperClass(cotizacion.getNombre()</span><span class="s0">,</span><span class="s2">&quot;1&quot;</span><span class="s0">,</span><span class="s1">tienda.getNombre()</span><span class="s0">,</span><span class="s1">tienda.getDireccion()</span><span class="s0">,</span><span class="s1">tienda.getTelefono()</span><span class="s0">,</span><span class="s1">cotizacion.getNombreCliente()</span><span class="s0">,</span><span class="s1">cotizacion.getDireccionCliente()</span><span class="s0">,</span><span class="s1">cotizacion.getNumeroCliente()</span><span class="s0">,</span><span class="s2">&quot;Ninguna&quot;</span><span class="s0">,</span><span class="s2">&quot;0&quot;</span><span class="s0">,</span><span class="s1">cotizacion.getPrecio()</span><span class="s0">,</span><span class="s1">cotizacion.getFecha()</span><span class="s0">,</span><span class="s1">cotizacion.getHora())</span><span class="s0">;</span>
+                <span class="s1">ClienteCotiHelper respuesta = </span><span class="s0">new </span><span class="s1">ClienteCotiHelper(tienda.getNombre()</span><span class="s0">,</span><span class="s1">tienda.getDireccion()</span><span class="s0">,</span><span class="s1">tienda.getTelefono()</span><span class="s0">,</span><span class="s1">cotizacion.getNombre()</span><span class="s0">,</span><span class="s1">cotizacion.getFecha()</span><span class="s0">,</span><span class="s1">cotizacion.getHora()</span><span class="s0">,</span><span class="s1">cotizacion.getPrecio())</span><span class="s0">;</span>
+                <span class="s1">ventas.child(telefono).push().setValue(producto)</span><span class="s0">;</span>
+                <span class="s1">domicilios.push().setValue(producto)</span><span class="s0">;</span>
+                <span class="s1">chat.child(cotizacion.getNumeroCliente()).setValue(respuesta)</span><span class="s0">;</span>
+                <span class="s1">cotizaciones.child(tienda.getTelefono()).push().setValue(cotizacion)</span><span class="s0">;</span>
+                <span class="s1">cotiCliente.child(cotizacion.getNumeroCliente()).child(</span><span class="s2">&quot;estadoPago&quot;</span><span class="s1">).setValue(</span><span class="s2">&quot;EN PROGRESO&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">Toast.makeText(globalContext</span><span class="s0">, </span><span class="s2">&quot;¡Comienza a hacer tu pedido!&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                <span class="s1">dialog.dismiss()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">btn_NO.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                <span class="s1">Toast.makeText(globalContext</span><span class="s0">, </span><span class="s2">&quot;Gracias por a intención. ¡Sigue buscando cotizaciones!&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                <span class="s1">dialog.dismiss()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+        <span class="s1">dialog.show()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

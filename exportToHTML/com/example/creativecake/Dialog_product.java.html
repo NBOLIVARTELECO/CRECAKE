@@ -1,0 +1,202 @@
+<html>
+<head>
+<title>Dialog_product.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6897bb;}
+.s3 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Dialog_product.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.creativecake</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.app.AlertDialog</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.app.Dialog</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.Context</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.DialogInterface</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.LayoutInflater</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.MotionEvent</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.Window</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Button</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.EditText</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ImageView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.RatingBar</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.TextView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Toast</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.annotation.NonNull</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.annotation.Nullable</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.fragment.app.DialogFragment</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.recyclerview.selection.ItemDetailsLookup</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.recyclerview.widget.RecyclerView</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.google.android.gms.tasks.OnFailureListener</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.android.gms.tasks.OnSuccessListener</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DataSnapshot</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DatabaseError</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DatabaseReference</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.FirebaseDatabase</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.Query</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.ValueEventListener</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.squareup.picasso.Picasso</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">Dialog_product{</span>
+
+    <span class="s1">producto_ejemplo producto</span><span class="s0">;</span>
+    <span class="s1">Context context</span><span class="s0">;</span>
+    <span class="s1">UserHelperClass usuario</span><span class="s0">;</span>
+    <span class="s1">StoreHelperClass tienda</span><span class="s0">;</span>
+    <span class="s1">String telefono</span><span class="s0">, </span><span class="s1">item</span><span class="s0">;</span>
+    <span class="s1">Boolean n</span><span class="s0">;</span>
+    <span class="s1">DatabaseReference datosCarrito</span><span class="s0">, </span><span class="s1">datosUsuario</span><span class="s0">, </span><span class="s1">datosTienda</span><span class="s0">;</span>
+    <span class="s1">ImageView img</span><span class="s0">;</span>
+    <span class="s1">RatingBar ratingProducto</span><span class="s0">;</span>
+    <span class="s1">TextView nombre_producto</span><span class="s0">, </span><span class="s1">precio_producto</span><span class="s0">, </span><span class="s1">tipo_producto</span><span class="s0">, </span><span class="s1">descripcionProducto</span><span class="s0">, </span><span class="s1">ofertaProducto</span><span class="s0">;</span>
+
+   <span class="s0">public </span><span class="s1">Dialog_product(</span><span class="s0">final </span><span class="s1">Context context</span><span class="s0">, final </span><span class="s1">producto_ejemplo producto</span><span class="s0">, final </span><span class="s1">String telefono){</span>
+
+       <span class="s0">this</span><span class="s1">.producto= producto</span><span class="s0">;</span>
+       <span class="s0">this</span><span class="s1">.telefono=telefono</span><span class="s0">;</span>
+       <span class="s0">this</span><span class="s1">.context=context</span><span class="s0">;</span>
+       <span class="s0">final </span><span class="s1">Dialog dialog = </span><span class="s0">new </span><span class="s1">Dialog(context)</span><span class="s0">;</span>
+       <span class="s1">dialog.requestWindowFeature((Window.FEATURE_NO_TITLE))</span><span class="s0">;</span>
+       <span class="s1">dialog.setCancelable(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+       <span class="s1">dialog.setContentView(R.layout.dialog_producto)</span><span class="s0">;</span>
+
+       <span class="s1">Button btn_cancelar = (Button) dialog.findViewById(R.id.btn_cancelar)</span><span class="s0">;</span>
+       <span class="s1">Button btn_agregar = (Button) dialog.findViewById(R.id.btn_agregar)</span><span class="s0">;</span>
+       <span class="s1">img = (ImageView) dialog.findViewById(R.id.img_product)</span><span class="s0">;</span>
+
+       <span class="s1">nombre_producto = (TextView) dialog.findViewById(R.id.text_product)</span><span class="s0">;</span>
+       <span class="s1">precio_producto = (TextView) dialog.findViewById(R.id.text_precio)</span><span class="s0">;</span>
+       <span class="s1">tipo_producto = (TextView) dialog.findViewById(R.id.text_tipo)</span><span class="s0">;</span>
+       <span class="s1">descripcionProducto = (TextView) dialog.findViewById(R.id.text_descripcion)</span><span class="s0">;</span>
+       <span class="s1">ofertaProducto = (TextView) dialog.findViewById(R.id.txt_off)</span><span class="s0">;</span>
+       <span class="s1">ratingProducto =(RatingBar) dialog.findViewById(R.id.ratingBar)</span><span class="s0">;</span>
+
+
+       <span class="s1">Picasso.get().load(producto.getDownloadUrl()).placeholder(R.drawable.imagenproducto). error(R.drawable.imagenproducto).resize(</span><span class="s2">130</span><span class="s0">,</span><span class="s2">130</span><span class="s1">).into(img)</span><span class="s0">;</span>
+       <span class="s1">nombre_producto.setText(producto.getNombre())</span><span class="s0">;</span>
+       <span class="s1">precio_producto.setText(</span><span class="s3">&quot;$ &quot; </span><span class="s1">+ producto.getPrecio())</span><span class="s0">;</span>
+       <span class="s1">tipo_producto.setText(producto.getTipo())</span><span class="s0">;</span>
+       <span class="s1">descripcionProducto.setText(producto.getDescripción())</span><span class="s0">;</span>
+       <span class="s1">ratingProducto.setRating(Float.parseFloat(producto.getRating()))</span><span class="s0">;</span>
+       <span class="s1">ofertaProducto.setText(</span><span class="s3">&quot;- &quot;</span><span class="s1">+producto.getOferta()+</span><span class="s3">&quot; %&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+       <span class="s1">btn_agregar.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+           <span class="s1">@Override</span>
+           <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+               <span class="s1">n=</span><span class="s0">false;</span>
+               <span class="s1">datosUsuario= FirebaseDatabase.getInstance().getReference(</span><span class="s3">&quot;usuarioCliente&quot;</span><span class="s1">).child(telefono)</span><span class="s0">;</span>
+               <span class="s1">datosUsuario.addListenerForSingleValueEvent(</span><span class="s0">new </span><span class="s1">ValueEventListener() {</span>
+                   <span class="s1">@Override</span>
+                   <span class="s0">public void </span><span class="s1">onDataChange(@NonNull DataSnapshot snapshot) {</span>
+                       <span class="s1">usuario =snapshot.getValue(UserHelperClass.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                       <span class="s0">try </span><span class="s1">{</span>
+                           <span class="s1">System.out.println(usuario.getNombre())</span><span class="s0">;</span>
+                           <span class="s1">n=</span><span class="s0">true;</span>
+                       <span class="s1">}</span><span class="s0">catch </span><span class="s1">(Exception e){</span>
+                           <span class="s1">e.printStackTrace()</span><span class="s0">;</span>
+                       <span class="s1">}</span>
+                   <span class="s1">}</span>
+
+                   <span class="s1">@Override</span>
+                   <span class="s0">public void </span><span class="s1">onCancelled(@NonNull DatabaseError error) {</span>
+
+                   <span class="s1">}</span>
+               <span class="s1">})</span><span class="s0">;</span>
+
+               <span class="s1">datosTienda= FirebaseDatabase.getInstance().getReference(</span><span class="s3">&quot;usuarioNegocio&quot;</span><span class="s1">)</span><span class="s0">;</span>
+               <span class="s1">Query queryT = datosTienda.orderByChild(</span><span class="s3">&quot;nombre&quot;</span><span class="s1">).equalTo(producto.getUser_name())</span><span class="s0">;</span>
+               <span class="s1">queryT.addListenerForSingleValueEvent(</span><span class="s0">new </span><span class="s1">ValueEventListener() {</span>
+                   <span class="s1">@Override</span>
+                   <span class="s0">public void </span><span class="s1">onDataChange(@NonNull DataSnapshot snapshot) {</span>
+                       <span class="s0">for</span><span class="s1">(DataSnapshot snap : snapshot.getChildren()){</span>
+                           <span class="s1">tienda =snap.getValue(StoreHelperClass.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                           <span class="s0">try </span><span class="s1">{</span>
+                               <span class="s1">System.out.println(tienda.getNombre())</span><span class="s0">;</span>
+                               <span class="s0">if</span><span class="s1">(n &amp;&amp; (!tienda.getNombre().equals(</span><span class="s0">null</span><span class="s1">))){</span>
+                                   <span class="s1">Agregar()</span><span class="s0">;</span>
+                               <span class="s1">}</span>
+                           <span class="s1">}</span><span class="s0">catch </span><span class="s1">(Exception e){</span>
+                               <span class="s1">e.printStackTrace()</span><span class="s0">;</span>
+                           <span class="s1">}</span>
+                           <span class="s0">break;</span>
+                       <span class="s1">}</span>
+
+                   <span class="s1">}</span>
+
+                   <span class="s1">@Override</span>
+                   <span class="s0">public void </span><span class="s1">onCancelled(@NonNull DatabaseError error) {</span>
+
+                   <span class="s1">}</span>
+               <span class="s1">})</span><span class="s0">;</span>
+
+
+           <span class="s1">}</span>
+       <span class="s1">})</span><span class="s0">;</span>
+
+       <span class="s1">btn_cancelar.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+           <span class="s1">@Override</span>
+           <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+
+               <span class="s1">dialog.dismiss()</span><span class="s0">;</span>
+
+           <span class="s1">}</span>
+       <span class="s1">})</span><span class="s0">;</span>
+
+       <span class="s1">dialog.show()</span><span class="s0">;</span>
+   <span class="s1">}</span>
+
+   <span class="s0">private void </span><span class="s1">Agregar(){</span>
+       <span class="s1">datosCarrito= FirebaseDatabase.getInstance().getReference().child(</span><span class="s3">&quot;carrito&quot;</span><span class="s1">).child(telefono)</span><span class="s0">;</span>
+       <span class="s1">Query query = datosCarrito.limitToLast(</span><span class="s2">1</span><span class="s1">)</span><span class="s0">;</span>
+       <span class="s1">query.addListenerForSingleValueEvent(</span><span class="s0">new </span><span class="s1">ValueEventListener() {</span>
+           <span class="s1">@Override</span>
+           <span class="s0">public void </span><span class="s1">onDataChange(@NonNull DataSnapshot snapshot) {</span>
+               <span class="s0">for </span><span class="s1">(DataSnapshot ds: snapshot.getChildren()) {</span>
+                   <span class="s1">item = ds.getKey()</span><span class="s0">;</span>
+                   <span class="s1">ItemHelperClass product = </span><span class="s0">new </span><span class="s1">ItemHelperClass(producto.getNombre()</span><span class="s0">,</span><span class="s3">&quot;1&quot;</span><span class="s0">, </span><span class="s1">producto.getUser_name()</span><span class="s0">, </span><span class="s1">tienda.getDireccion()</span><span class="s0">,</span>
+                           <span class="s1">tienda.getTelefono()</span><span class="s0">, </span><span class="s1">usuario.getNombre()</span><span class="s0">, </span><span class="s1">usuario.getDireccion()</span><span class="s0">,</span><span class="s1">telefono</span><span class="s0">,</span>
+                           <span class="s1">producto.getDownloadUrl()</span><span class="s0">,</span><span class="s1">producto.getOferta()</span><span class="s0">,</span><span class="s1">producto.getPrecio()</span><span class="s0">, </span><span class="s3">&quot; &quot;</span><span class="s0">, </span><span class="s3">&quot; &quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+                   <span class="s1">datosCarrito.child(item).setValue(product).addOnSuccessListener(</span><span class="s0">new </span><span class="s1">OnSuccessListener&lt;Void&gt;() {</span>
+                       <span class="s1">@Override</span>
+                       <span class="s0">public void </span><span class="s1">onSuccess(Void aVoid) {</span>
+                           <span class="s1">Toast.makeText(context</span><span class="s0">, </span><span class="s3">&quot;Producto agregado al Carrito&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                           <span class="s0">int </span><span class="s1">numItem = Integer.parseInt(item) + </span><span class="s2">1</span><span class="s0">;</span>
+                           <span class="s1">String newItem = String.valueOf(numItem)</span><span class="s0">;</span>
+                           <span class="s1">datosCarrito.child(newItem).setValue(</span><span class="s3">&quot; &quot;</span><span class="s1">)</span><span class="s0">;</span>
+                       <span class="s1">}</span>
+                   <span class="s1">}).addOnFailureListener(</span><span class="s0">new </span><span class="s1">OnFailureListener() {</span>
+                       <span class="s1">@Override</span>
+                       <span class="s0">public void </span><span class="s1">onFailure(@NonNull Exception e) {</span>
+                           <span class="s1">Toast.makeText(context</span><span class="s0">, </span><span class="s3">&quot;Error al agregar el producto&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                       <span class="s1">}</span>
+                   <span class="s1">})</span><span class="s0">;</span>
+
+               <span class="s1">}</span>
+           <span class="s1">}</span>
+
+           <span class="s1">@Override</span>
+           <span class="s0">public void </span><span class="s1">onCancelled(@NonNull DatabaseError error) {</span>
+
+           <span class="s1">}</span>
+       <span class="s1">})</span><span class="s0">;</span>
+   <span class="s1">}</span>
+
+
+
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

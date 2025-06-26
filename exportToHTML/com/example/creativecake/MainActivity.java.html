@@ -1,0 +1,384 @@
+<html>
+<head>
+<title>MainActivity.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+MainActivity.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.creativecake</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.content.Intent</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Button</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.EditText</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.annotation.NonNull</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.appcompat.app.AppCompatActivity</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DataSnapshot</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DatabaseError</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DatabaseReference</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.FirebaseDatabase</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.Query</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.ValueEventListener</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">MainActivity </span><span class="s0">extends </span><span class="s1">AppCompatActivity {</span>
+
+    <span class="s0">private </span><span class="s1">Button iniciaSesionCliente</span><span class="s0">, </span><span class="s1">registro</span><span class="s0">, </span><span class="s1">iniciaSesionDom</span><span class="s0">, </span><span class="s1">iniciaSesionNeg</span><span class="s0">, </span><span class="s1">iniciaSesionAdmin</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">EditText etTelefono</span><span class="s0">, </span><span class="s1">etPassword</span><span class="s0">;</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState)</span>
+    <span class="s1">{</span>
+        <span class="s0">super</span><span class="s1">.onCreate(savedInstanceState)</span><span class="s0">;</span>
+        <span class="s1">setContentView(R.layout.activity_main)</span><span class="s0">;</span>
+        <span class="s1">iniciaSesionCliente = (Button)findViewById(R.id.iniciaSesionCliente)</span><span class="s0">;</span>
+        <span class="s1">registro = (Button)findViewById(R.id.idBotonRegistro)</span><span class="s0">;</span>
+        <span class="s1">iniciaSesionDom = (Button)findViewById(R.id.iniciaSesionDomiciliario)</span><span class="s0">;</span>
+        <span class="s1">iniciaSesionNeg = (Button)findViewById(R.id.iniciaSesionNegocio)</span><span class="s0">;</span>
+        <span class="s1">iniciaSesionAdmin = (Button)findViewById(R.id.iniciaSesionAdmin)</span><span class="s0">;</span>
+
+        <span class="s1">etTelefono = (EditText)findViewById(R.id.idTelefonoMain)</span><span class="s0">;</span>
+        <span class="s1">etPassword = (EditText)findViewById(R.id.idPasswordMain)</span><span class="s0">;</span>
+
+        <span class="s1">iniciaSesionCliente.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener()</span>
+        <span class="s1">{</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v)</span>
+            <span class="s1">{</span>
+                <span class="s1">LoginCliente()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">registro.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View view)</span>
+            <span class="s1">{</span>
+                <span class="s1">Intent registro = </span><span class="s0">new </span><span class="s1">Intent(getApplicationContext()</span><span class="s0">, </span><span class="s1">Registro.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">startActivity(registro)</span><span class="s0">;</span>
+
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">iniciaSesionDom.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                <span class="s1">LoginDomiciliario()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">iniciaSesionNeg.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                <span class="s1">LoginStore()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">iniciaSesionAdmin.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                <span class="s1">LoginDeveloper()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">System.out.println(SharedPreferences_Util.getPhone_SP(</span><span class="s0">this</span><span class="s1">))</span><span class="s0">;</span>
+        <span class="s1">System.out.println(SharedPreferences_Util.getPassword_SP(</span><span class="s0">this</span><span class="s1">))</span><span class="s0">;</span>
+        <span class="s1">System.out.println(SharedPreferences_Util.getType_SP(</span><span class="s0">this</span><span class="s1">))</span><span class="s0">;</span>
+
+        <span class="s0">if</span><span class="s1">(SharedPreferences_Util.getPhone_SP(</span><span class="s0">this</span><span class="s1">) != </span><span class="s0">null </span><span class="s1">&amp;&amp; SharedPreferences_Util.getType_SP(</span><span class="s0">this</span><span class="s1">) != </span><span class="s0">null</span><span class="s1">) {</span>
+            <span class="s0">if</span><span class="s1">(!SharedPreferences_Util.getPhone_SP(</span><span class="s0">this</span><span class="s1">).equals(</span><span class="s2">&quot;&quot;</span><span class="s1">)) {</span>
+                <span class="s0">if</span><span class="s1">(SharedPreferences_Util.getType_SP(</span><span class="s0">this</span><span class="s1">).equals(</span><span class="s2">&quot;User&quot;</span><span class="s1">)) {</span>
+                    <span class="s1">Intent intent = </span><span class="s0">new </span><span class="s1">Intent(getApplicationContext()</span><span class="s0">, </span><span class="s1">MainCliente.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">startActivity(intent)</span><span class="s0">;</span>
+                    <span class="s1">finish()</span><span class="s0">;</span>
+                <span class="s1">} </span><span class="s0">else if </span><span class="s1">(SharedPreferences_Util.getType_SP(</span><span class="s0">this</span><span class="s1">).equals(</span><span class="s2">&quot;Tienda&quot;</span><span class="s1">)) {</span>
+                    <span class="s1">Intent intent = </span><span class="s0">new </span><span class="s1">Intent(getApplicationContext()</span><span class="s0">, </span><span class="s1">Inicio_tienda.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">startActivity(intent)</span><span class="s0">;</span>
+                    <span class="s1">finish()</span><span class="s0">;</span>
+                <span class="s1">} </span><span class="s0">else if </span><span class="s1">(SharedPreferences_Util.getType_SP(</span><span class="s0">this</span><span class="s1">).equals(</span><span class="s2">&quot;Domiciliario&quot;</span><span class="s1">)) {</span>
+                    <span class="s1">Intent intent = </span><span class="s0">new </span><span class="s1">Intent(getApplicationContext()</span><span class="s0">, </span><span class="s1">MainDomiciliario.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">startActivity(intent)</span><span class="s0">;</span>
+                    <span class="s1">finish()</span><span class="s0">;</span>
+                <span class="s1">} </span><span class="s0">else if </span><span class="s1">(SharedPreferences_Util.getType_SP(</span><span class="s0">this</span><span class="s1">).equals(</span><span class="s2">&quot;Admin&quot;</span><span class="s1">)) {</span>
+                    <span class="s1">Intent intent = </span><span class="s0">new </span><span class="s1">Intent(getApplicationContext()</span><span class="s0">, </span><span class="s1">MainAdministrador.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">startActivity(intent)</span><span class="s0">;</span>
+                    <span class="s1">finish()</span><span class="s0">;</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private </span><span class="s1">Boolean validarTelefono()</span>
+    <span class="s1">{</span>
+        <span class="s1">String telefono = etTelefono.getText().toString()</span><span class="s0">;</span>
+        <span class="s0">if </span><span class="s1">(telefono.isEmpty())</span>
+        <span class="s1">{</span>
+            <span class="s1">etTelefono.setError(</span><span class="s2">&quot;No puede estar vacio&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s0">return false;</span>
+        <span class="s1">}</span><span class="s0">else</span>
+            <span class="s1">{</span>
+                <span class="s1">etTelefono.setError(</span><span class="s0">null</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s0">return true;</span>
+            <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private </span><span class="s1">Boolean validarPassword()</span>
+    <span class="s1">{</span>
+        <span class="s1">String password = etPassword.getText().toString()</span><span class="s0">;</span>
+        <span class="s0">if </span><span class="s1">(password.isEmpty())</span>
+        <span class="s1">{</span>
+            <span class="s1">etPassword.setError(</span><span class="s2">&quot;No puede estar vacio&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s0">return false;</span>
+        <span class="s1">}</span><span class="s0">else</span>
+        <span class="s1">{</span>
+            <span class="s1">etPassword.setError(</span><span class="s0">null</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s0">return true;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">LoginCliente()</span>
+    <span class="s1">{</span>
+        <span class="s0">if </span><span class="s1">(!validarTelefono() | !validarPassword())</span>
+        <span class="s1">{</span>
+            <span class="s0">return;</span>
+        <span class="s1">}</span><span class="s0">else</span>
+            <span class="s1">{</span>
+                <span class="s1">isUser()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">LoginDomiciliario()</span>
+    <span class="s1">{</span>
+        <span class="s0">if </span><span class="s1">(!validarTelefono() | !validarPassword())</span>
+        <span class="s1">{</span>
+            <span class="s0">return;</span>
+        <span class="s1">}</span><span class="s0">else</span>
+        <span class="s1">{</span>
+            <span class="s1">isDomiciliary()</span><span class="s0">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">LoginStore()</span>
+    <span class="s1">{</span>
+        <span class="s0">if </span><span class="s1">(!validarTelefono() | !validarPassword())</span>
+        <span class="s1">{</span>
+            <span class="s0">return;</span>
+        <span class="s1">}</span><span class="s0">else</span>
+        <span class="s1">{</span>
+            <span class="s1">isStore()</span><span class="s0">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">LoginDeveloper()</span>
+    <span class="s1">{</span>
+        <span class="s0">if </span><span class="s1">(!validarTelefono() | !validarPassword())</span>
+        <span class="s1">{</span>
+            <span class="s0">return;</span>
+        <span class="s1">}</span><span class="s0">else</span>
+        <span class="s1">{</span>
+            <span class="s1">isDeveloper()</span><span class="s0">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">isDeveloper()</span>
+    <span class="s1">{</span>
+        <span class="s0">final </span><span class="s1">String numeroIngresado = etTelefono.getText().toString().trim()</span><span class="s0">;</span>
+        <span class="s0">final </span><span class="s1">String passwordIngresado = etPassword.getText().toString().trim()</span><span class="s0">;</span>
+
+        <span class="s1">DatabaseReference reference = FirebaseDatabase.getInstance().getReference(</span><span class="s2">&quot;usuarioDev&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">Query checkUsuario = reference.orderByChild(</span><span class="s2">&quot;telefono&quot;</span><span class="s1">).equalTo(numeroIngresado)</span><span class="s0">;</span>
+
+        <span class="s1">checkUsuario.addListenerForSingleValueEvent(</span><span class="s0">new </span><span class="s1">ValueEventListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onDataChange(@NonNull DataSnapshot snapshot)</span>
+            <span class="s1">{</span>
+                <span class="s0">if </span><span class="s1">(snapshot.exists())</span>
+                <span class="s1">{</span>
+                    <span class="s1">etTelefono.setError(</span><span class="s0">null</span><span class="s1">)</span><span class="s0">;</span>
+
+                    <span class="s1">String passwordfromDB = snapshot.child(numeroIngresado).child(</span><span class="s2">&quot;password&quot;</span><span class="s1">).getValue(String.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+
+                    <span class="s0">if </span><span class="s1">(passwordfromDB.equals(passwordIngresado))</span>
+                    <span class="s1">{</span>
+                        <span class="s1">SharedPreferences_Util.savePhone_SP(numeroIngresado</span><span class="s0">, </span><span class="s1">getApplication().getApplicationContext())</span><span class="s0">;</span>
+                        <span class="s1">SharedPreferences_Util.savePassword_SP(passwordIngresado</span><span class="s0">, </span><span class="s1">getApplication().getApplicationContext())</span><span class="s0">;</span>
+                        <span class="s1">SharedPreferences_Util.saveType_SP(</span><span class="s2">&quot;Admin&quot;</span><span class="s0">, </span><span class="s1">getApplication().getApplicationContext())</span><span class="s0">;</span>
+                        <span class="s1">Intent intent = </span><span class="s0">new </span><span class="s1">Intent(getApplicationContext()</span><span class="s0">, </span><span class="s1">MainAdministrador.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">startActivity(intent)</span><span class="s0">;</span>
+                        <span class="s1">finish()</span><span class="s0">;</span>
+                    <span class="s1">}</span><span class="s0">else</span>
+                    <span class="s1">{</span>
+                        <span class="s1">etPassword.setError(</span><span class="s2">&quot;Contraeña incorrecta&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">etPassword.requestFocus()</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+                <span class="s1">}</span><span class="s0">else</span>
+                <span class="s1">{</span>
+                    <span class="s1">etTelefono.setError(</span><span class="s2">&quot;No está registrado el numero, registrate&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onCancelled(@NonNull DatabaseError error)</span>
+            <span class="s1">{</span>
+
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+
+    <span class="s0">private void </span><span class="s1">isUser()</span>
+    <span class="s1">{</span>
+        <span class="s0">final </span><span class="s1">String numeroIngresado = etTelefono.getText().toString().trim()</span><span class="s0">;</span>
+        <span class="s0">final </span><span class="s1">String passwordIngresado = etPassword.getText().toString().trim()</span><span class="s0">;</span>
+
+        <span class="s1">DatabaseReference reference = FirebaseDatabase.getInstance().getReference(</span><span class="s2">&quot;usuarioCliente&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">Query checkUsuario = reference.orderByChild(</span><span class="s2">&quot;telefono&quot;</span><span class="s1">).equalTo(numeroIngresado)</span><span class="s0">;</span>
+
+        <span class="s1">checkUsuario.addListenerForSingleValueEvent(</span><span class="s0">new </span><span class="s1">ValueEventListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onDataChange(@NonNull DataSnapshot snapshot)</span>
+            <span class="s1">{</span>
+                <span class="s0">if </span><span class="s1">(snapshot.exists())</span>
+                <span class="s1">{</span>
+                    <span class="s1">etTelefono.setError(</span><span class="s0">null</span><span class="s1">)</span><span class="s0">;</span>
+
+                    <span class="s1">String passwordfromDB = snapshot.child(numeroIngresado).child(</span><span class="s2">&quot;password&quot;</span><span class="s1">).getValue(String.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+
+                    <span class="s0">if </span><span class="s1">(passwordfromDB.equals(passwordIngresado))</span>
+                    <span class="s1">{</span>
+                        <span class="s1">SharedPreferences_Util.savePhone_SP(numeroIngresado</span><span class="s0">, </span><span class="s1">getApplicationContext())</span><span class="s0">;</span>
+                        <span class="s1">SharedPreferences_Util.savePassword_SP(passwordIngresado</span><span class="s0">, </span><span class="s1">getApplicationContext())</span><span class="s0">;</span>
+                        <span class="s1">SharedPreferences_Util.saveType_SP(</span><span class="s2">&quot;User&quot;</span><span class="s0">, </span><span class="s1">getApplication().getApplicationContext())</span><span class="s0">;</span>
+                        <span class="s1">Intent intent = </span><span class="s0">new </span><span class="s1">Intent(getApplicationContext()</span><span class="s0">, </span><span class="s1">MainCliente.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">startActivity(intent)</span><span class="s0">;</span>
+                        <span class="s1">finish()</span><span class="s0">;</span>
+                    <span class="s1">}</span><span class="s0">else</span>
+                    <span class="s1">{</span>
+                        <span class="s1">etPassword.setError(</span><span class="s2">&quot;Contraeña incorrecta&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">etPassword.requestFocus()</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+                <span class="s1">}</span><span class="s0">else</span>
+                <span class="s1">{</span>
+                    <span class="s1">etTelefono.setError(</span><span class="s2">&quot;No está registrado el numero, registrate&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onCancelled(@NonNull DatabaseError error)</span>
+            <span class="s1">{</span>
+
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">isDomiciliary()</span>
+    <span class="s1">{</span>
+        <span class="s0">final </span><span class="s1">String numeroIngresado = etTelefono.getText().toString().trim()</span><span class="s0">;</span>
+        <span class="s0">final </span><span class="s1">String passwordIngresado = etPassword.getText().toString().trim()</span><span class="s0">;</span>
+
+
+        <span class="s1">DatabaseReference reference = FirebaseDatabase.getInstance().getReference(</span><span class="s2">&quot;usuarioDomiciliario&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">Query checkUsuario = reference.orderByChild(</span><span class="s2">&quot;telefono&quot;</span><span class="s1">).equalTo(numeroIngresado)</span><span class="s0">;</span>
+
+        <span class="s1">checkUsuario.addListenerForSingleValueEvent(</span><span class="s0">new </span><span class="s1">ValueEventListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onDataChange(@NonNull DataSnapshot snapshot)</span>
+            <span class="s1">{</span>
+                <span class="s0">if </span><span class="s1">(snapshot.exists())</span>
+                <span class="s1">{</span>
+                    <span class="s1">etTelefono.setError(</span><span class="s0">null</span><span class="s1">)</span><span class="s0">;</span>
+
+                    <span class="s1">String passwordfromDB = snapshot.child(numeroIngresado).child(</span><span class="s2">&quot;password&quot;</span><span class="s1">).getValue(String.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+
+                    <span class="s0">if </span><span class="s1">(passwordfromDB.equals(passwordIngresado))</span>
+                    <span class="s1">{</span>
+                        <span class="s1">SharedPreferences_Util.savePhone_SP(numeroIngresado</span><span class="s0">, </span><span class="s1">getApplication().getApplicationContext())</span><span class="s0">;</span>
+                        <span class="s1">SharedPreferences_Util.savePassword_SP(passwordIngresado</span><span class="s0">, </span><span class="s1">getApplication().getApplicationContext())</span><span class="s0">;</span>
+                        <span class="s1">SharedPreferences_Util.saveType_SP(</span><span class="s2">&quot;Domiciliario&quot;</span><span class="s0">, </span><span class="s1">getApplication().getApplicationContext())</span><span class="s0">;</span>
+                        <span class="s1">Intent intent = </span><span class="s0">new </span><span class="s1">Intent(getApplicationContext()</span><span class="s0">, </span><span class="s1">MainDomiciliario.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">startActivity(intent)</span><span class="s0">;</span>
+                        <span class="s1">finish()</span><span class="s0">;</span>
+                    <span class="s1">}</span><span class="s0">else</span>
+                    <span class="s1">{</span>
+                        <span class="s1">etPassword.setError(</span><span class="s2">&quot;Contraeña incorrecta&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">etPassword.requestFocus()</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+                <span class="s1">}</span><span class="s0">else</span>
+                <span class="s1">{</span>
+                    <span class="s1">etTelefono.setError(</span><span class="s2">&quot;No está registrado el numero, registrate&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onCancelled(@NonNull DatabaseError error)</span>
+            <span class="s1">{</span>
+
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">isStore()</span>
+    <span class="s1">{</span>
+        <span class="s0">final </span><span class="s1">String numeroIngresado = etTelefono.getText().toString().trim()</span><span class="s0">;</span>
+        <span class="s0">final </span><span class="s1">String passwordIngresado = etPassword.getText().toString().trim()</span><span class="s0">;</span>
+
+
+        <span class="s1">DatabaseReference reference = FirebaseDatabase.getInstance().getReference(</span><span class="s2">&quot;usuarioNegocio&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">Query checkUsuario = reference.orderByChild(</span><span class="s2">&quot;telefono&quot;</span><span class="s1">).equalTo(numeroIngresado)</span><span class="s0">;</span>
+
+        <span class="s1">checkUsuario.addListenerForSingleValueEvent(</span><span class="s0">new </span><span class="s1">ValueEventListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onDataChange(@NonNull DataSnapshot snapshot)</span>
+            <span class="s1">{</span>
+                <span class="s0">if </span><span class="s1">(snapshot.exists())</span>
+                <span class="s1">{</span>
+                    <span class="s1">etTelefono.setError(</span><span class="s0">null</span><span class="s1">)</span><span class="s0">;</span>
+
+
+                    <span class="s1">String namefromDB = snapshot.child(numeroIngresado).child(</span><span class="s2">&quot;nombre&quot;</span><span class="s1">).getValue(String.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">String passwordfromDB = snapshot.child(numeroIngresado).child(</span><span class="s2">&quot;password&quot;</span><span class="s1">).getValue(String.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+
+                    <span class="s0">if </span><span class="s1">(passwordfromDB.equals(passwordIngresado))</span>
+                    <span class="s1">{</span>
+                        <span class="s1">SharedPreferences_Util.savePhone_SP(numeroIngresado</span><span class="s0">, </span><span class="s1">getApplication().getApplicationContext())</span><span class="s0">;</span>
+                        <span class="s1">SharedPreferences_Util.savePassword_SP(passwordIngresado</span><span class="s0">, </span><span class="s1">getApplication().getApplicationContext())</span><span class="s0">;</span>
+                        <span class="s1">SharedPreferences_Util.saveType_SP(</span><span class="s2">&quot;Tienda&quot;</span><span class="s0">, </span><span class="s1">getApplication().getApplicationContext())</span><span class="s0">;</span>
+                        <span class="s1">Intent intent = </span><span class="s0">new </span><span class="s1">Intent(getApplicationContext()</span><span class="s0">, </span><span class="s1">Inicio_tienda.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">intent.putExtra(</span><span class="s2">&quot;nombreIngresado&quot;</span><span class="s0">, </span><span class="s1">namefromDB)</span><span class="s0">;</span>
+                        <span class="s1">startActivity(intent)</span><span class="s0">;</span>
+                        <span class="s1">finish()</span><span class="s0">;</span>
+                    <span class="s1">}</span><span class="s0">else</span>
+                    <span class="s1">{</span>
+                        <span class="s1">etPassword.setError(</span><span class="s2">&quot;Contraeña incorrecta&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">etPassword.requestFocus()</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+                <span class="s1">}</span><span class="s0">else</span>
+                <span class="s1">{</span>
+                    <span class="s1">etTelefono.setError(</span><span class="s2">&quot;No está registrado el numero, registrate&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onCancelled(@NonNull DatabaseError error)</span>
+            <span class="s1">{</span>
+
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span></pre>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<html>
+<head>
+<title>AdaptadorPedidosTienda.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6897bb;}
+.s3 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+AdaptadorPedidosTienda.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.creativecake</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.content.Context</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.LayoutInflater</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.ViewGroup</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ImageView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.RatingBar</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.TextView</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.annotation.NonNull</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.cardview.widget.CardView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.recyclerview.widget.RecyclerView</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.squareup.picasso.Picasso</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.util.ArrayList</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">AdaptadorPedidosTienda </span><span class="s0">extends </span><span class="s1">RecyclerView.Adapter&lt;AdaptadorPedidosTienda.PedidosviewHolder&gt;{</span>
+    <span class="s1">ArrayList&lt;ItemHelperClass&gt; listaProductos</span><span class="s0">;</span>
+    <span class="s1">Context globalContext</span><span class="s0">;</span>
+    <span class="s1">String telefono</span><span class="s0">;</span>
+
+    <span class="s0">public </span><span class="s1">AdaptadorPedidosTienda(ArrayList&lt;ItemHelperClass&gt; listaProductos</span><span class="s0">, </span><span class="s1">Context globalContext</span><span class="s0">, </span><span class="s1">String telefono) {</span>
+        <span class="s0">this</span><span class="s1">.listaProductos = listaProductos</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.globalContext = globalContext</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.telefono = telefono</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@NonNull</span>
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">PedidosviewHolder onCreateViewHolder(@NonNull ViewGroup parent</span><span class="s0">, int </span><span class="s1">viewType) {</span>
+        <span class="s1">View vista= LayoutInflater.from(parent.getContext()).inflate(R.layout.p_ejemplo_pedidos</span><span class="s0">,</span><span class="s1">parent</span><span class="s0">,false</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s0">return new </span><span class="s1">PedidosviewHolder(vista)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onBindViewHolder(@NonNull PedidosviewHolder holder</span><span class="s0">, int </span><span class="s1">position) {</span>
+        <span class="s0">final </span><span class="s1">ItemHelperClass producto = listaProductos.get(position)</span><span class="s0">;</span>
+
+        <span class="s1">Picasso.get().load(producto.getImagen()).placeholder(R.drawable.imagenproducto). error(R.drawable.imagenproducto).resize(</span><span class="s2">100</span><span class="s0">,</span><span class="s2">100</span><span class="s1">).into(holder.imagenProducto)</span><span class="s0">;</span>
+        <span class="s1">holder.nombreProducto.setText(producto.getProducto())</span><span class="s0">;</span>
+        <span class="s1">holder.cantidadProducto.setText(</span><span class="s3">&quot;x &quot;</span><span class="s1">+producto.getCantidad())</span><span class="s0">;</span>
+        <span class="s1">holder.fechaEntrega.setText(producto.getFecha())</span><span class="s0">;</span>
+        <span class="s1">holder.nombreCliente.setText(</span><span class="s3">&quot;Cliente: &quot;</span><span class="s1">+producto.getNumeroUsuario())</span><span class="s0">;</span>
+
+        <span class="s1">holder.card.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                <span class="s1">Dialog_entregado dialog_product = </span><span class="s0">new </span><span class="s1">Dialog_entregado(globalContext</span><span class="s0">,</span><span class="s1">producto</span><span class="s0">, </span><span class="s1">telefono)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public int </span><span class="s1">getItemCount() {</span>
+        <span class="s0">return </span><span class="s1">listaProductos.size()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public  class  </span><span class="s1">PedidosviewHolder </span><span class="s0">extends </span><span class="s1">RecyclerView.ViewHolder {</span>
+
+        <span class="s1">CardView card</span><span class="s0">;</span>
+        <span class="s1">ImageView imagenProducto</span><span class="s0">;</span>
+        <span class="s1">TextView nombreProducto</span><span class="s0">, </span><span class="s1">cantidadProducto</span><span class="s0">, </span><span class="s1">fechaEntrega</span><span class="s0">, </span><span class="s1">nombreCliente</span><span class="s0">;</span>
+
+        <span class="s0">public </span><span class="s1">PedidosviewHolder(@NonNull View itemView) {</span>
+            <span class="s0">super</span><span class="s1">(itemView)</span><span class="s0">;</span>
+
+            <span class="s1">card =  (CardView) itemView.findViewById(R.id.Card_Pedido)</span><span class="s0">;</span>
+            <span class="s1">imagenProducto= (ImageView) itemView.findViewById(R.id.imagen_Pedido)</span><span class="s0">;</span>
+            <span class="s1">nombreProducto= (TextView) itemView.findViewById(R.id.Nombre_Pedido)</span><span class="s0">;</span>
+            <span class="s1">cantidadProducto= (TextView) itemView.findViewById(R.id.Cantidad_Pedido)</span><span class="s0">;</span>
+            <span class="s1">fechaEntrega= (TextView) itemView.findViewById(R.id.Fecha_PedidoHoy)</span><span class="s0">;</span>
+            <span class="s1">nombreCliente = (TextView) itemView.findViewById(R.id.Nombre_Cli_P)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

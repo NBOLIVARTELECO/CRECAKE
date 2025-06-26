@@ -1,0 +1,96 @@
+<html>
+<head>
+<title>Dialog_product_tienda.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6897bb;}
+.s3 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Dialog_product_tienda.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.creativecake</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.app.Dialog</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.Context</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.Window</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Button</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ImageView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.RatingBar</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.TextView</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.squareup.picasso.Picasso</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">Dialog_product_tienda {</span>
+    <span class="s1">producto_ejemplo producto</span><span class="s0">;</span>
+    <span class="s1">ImageView img</span><span class="s0">;</span>
+    <span class="s1">RatingBar ratingProducto</span><span class="s0">;</span>
+    <span class="s1">TextView nombre_producto</span><span class="s0">, </span><span class="s1">precio_producto</span><span class="s0">, </span><span class="s1">tipo_producto</span><span class="s0">, </span><span class="s1">descripcionProducto</span><span class="s0">, </span><span class="s1">cantidadProducto</span><span class="s0">, </span><span class="s1">ofertaProducto</span><span class="s0">;</span>
+
+    <span class="s0">public </span><span class="s1">Dialog_product_tienda(){}</span>
+
+    <span class="s0">public </span><span class="s1">Dialog_product_tienda(Context context</span><span class="s0">, </span><span class="s1">producto_ejemplo producto){</span>
+
+        <span class="s0">this</span><span class="s1">.producto= producto</span><span class="s0">;</span>
+
+        <span class="s0">final </span><span class="s1">Dialog dialog = </span><span class="s0">new </span><span class="s1">Dialog(context)</span><span class="s0">;</span>
+        <span class="s1">dialog.requestWindowFeature((Window.FEATURE_NO_TITLE))</span><span class="s0">;</span>
+        <span class="s1">dialog.setCancelable(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">dialog.setContentView(R.layout.dialog_producto_tienda)</span><span class="s0">;</span>
+
+        <span class="s1">Button btn_cancelar = (Button) dialog.findViewById(R.id.btn_cancelar)</span><span class="s0">;</span>
+        <span class="s1">img = (ImageView) dialog.findViewById(R.id.img_product)</span><span class="s0">;</span>
+
+        <span class="s1">nombre_producto = (TextView) dialog.findViewById(R.id.text_product)</span><span class="s0">;</span>
+        <span class="s1">precio_producto = (TextView) dialog.findViewById(R.id.text_precio)</span><span class="s0">;</span>
+        <span class="s1">tipo_producto = (TextView) dialog.findViewById(R.id.text_tipo)</span><span class="s0">;</span>
+        <span class="s1">descripcionProducto = (TextView) dialog.findViewById(R.id.text_descripcion)</span><span class="s0">;</span>
+        <span class="s1">ofertaProducto = (TextView) dialog.findViewById(R.id.text_oferta)</span><span class="s0">;</span>
+        <span class="s1">ratingProducto =(RatingBar) dialog.findViewById(R.id.ratingBar)</span><span class="s0">;</span>
+        <span class="s1">cantidadProducto=(TextView) dialog.findViewById(R.id.text_cantidad)</span><span class="s0">;</span>
+
+        <span class="s1">ofertaProducto.setVisibility(View.GONE)</span><span class="s0">;</span>
+
+        <span class="s1">Picasso.get().load(producto.getDownloadUrl()).placeholder(R.drawable.imagenproducto). error(R.drawable.imagenproducto).resize(</span><span class="s2">130</span><span class="s0">,</span><span class="s2">130</span><span class="s1">).into(img)</span><span class="s0">;</span>
+        <span class="s1">nombre_producto.setText(producto.getNombre())</span><span class="s0">;</span>
+        <span class="s1">precio_producto.setText(</span><span class="s3">&quot;$ &quot; </span><span class="s1">+ producto.getPrecio())</span><span class="s0">;</span>
+        <span class="s1">tipo_producto.setText(producto.getTipo())</span><span class="s0">;</span>
+        <span class="s1">descripcionProducto.setText(producto.getDescripción())</span><span class="s0">;</span>
+        <span class="s1">ratingProducto.setRating(Float.parseFloat(producto.getRating()))</span><span class="s0">;</span>
+        <span class="s1">cantidadProducto.setText(producto.getCantidad())</span><span class="s0">;</span>
+        <span class="s0">if </span><span class="s1">(producto.getOferta()==</span><span class="s3">&quot;&quot;</span><span class="s1">){</span>
+            <span class="s1">ofertaProducto.setVisibility(View.INVISIBLE)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s0">else if </span><span class="s1">(producto.getOferta()==</span><span class="s3">&quot; &quot;</span><span class="s1">) {</span>
+            <span class="s1">ofertaProducto.setVisibility(View.INVISIBLE)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s0">else if </span><span class="s1">(producto.getOferta()==</span><span class="s3">&quot;0&quot;</span><span class="s1">) {</span>
+            <span class="s1">ofertaProducto.setVisibility(View.INVISIBLE)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s0">else</span><span class="s1">{</span>
+            <span class="s1">ofertaProducto.setVisibility(View.VISIBLE)</span><span class="s0">;</span>
+            <span class="s1">ofertaProducto.setText(</span><span class="s3">&quot;- &quot;</span><span class="s1">+producto.getOferta()+</span><span class="s3">&quot; %&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s1">btn_cancelar.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+
+                <span class="s1">dialog.dismiss()</span><span class="s0">;</span>
+
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">dialog.show()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

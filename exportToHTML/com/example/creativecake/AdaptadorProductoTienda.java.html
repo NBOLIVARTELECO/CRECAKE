@@ -1,0 +1,106 @@
+<html>
+<head>
+<title>AdaptadorProductoTienda.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6897bb;}
+.s3 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+AdaptadorProductoTienda.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.creativecake</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.content.Context</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.LayoutInflater</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.ViewGroup</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Button</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ImageView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.TextView</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.annotation.NonNull</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.recyclerview.widget.RecyclerView</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.squareup.picasso.Picasso</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.util.ArrayList</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">AdaptadorProductoTienda </span><span class="s0">extends </span><span class="s1">RecyclerView.Adapter&lt;AdaptadorProductoTienda.ViewHolderDatosTienda&gt; {</span>
+    <span class="s1">ArrayList&lt;producto_ejemplo&gt; listaProductos</span><span class="s0">;</span>
+    <span class="s1">Context globalContext</span><span class="s0">;</span>
+
+    <span class="s0">public </span><span class="s1">AdaptadorProductoTienda(ArrayList&lt;producto_ejemplo&gt; listaProductos</span><span class="s0">, </span><span class="s1">Context globalContext){</span>
+        <span class="s0">this</span><span class="s1">.listaProductos = listaProductos</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.globalContext = globalContext</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">ViewHolderDatosTienda onCreateViewHolder(@NonNull ViewGroup parent</span><span class="s0">, int </span><span class="s1">viewType) {</span>
+        <span class="s1">View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.p_ejemplo_tienda</span><span class="s0">,</span><span class="s1">parent</span><span class="s0">,false</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s0">return new </span><span class="s1">ViewHolderDatosTienda(view)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onBindViewHolder(@NonNull AdaptadorProductoTienda.ViewHolderDatosTienda holder</span><span class="s0">, int </span><span class="s1">position) {</span>
+        <span class="s0">final </span><span class="s1">producto_ejemplo producto = listaProductos.get(position)</span><span class="s0">;</span>
+        <span class="s1">Picasso.get().load(producto.getDownloadUrl()).placeholder(R.drawable.imagenproducto). error(R.drawable.imagenproducto).resize(</span><span class="s2">150</span><span class="s0">,</span><span class="s2">150</span><span class="s1">).into(holder.imagenProducto)</span><span class="s0">;</span>
+        <span class="s1">holder.nombreProducto.setText(producto.getNombre())</span><span class="s0">;</span>
+        <span class="s1">holder.valorProducto.setText(</span><span class="s3">&quot;$ &quot;</span><span class="s1">+producto.getPrecio())</span><span class="s0">;</span>
+        <span class="s1">holder.tipoProducto.setText(producto.getTipo())</span><span class="s0">;</span>
+        <span class="s1">holder.ofertaProducto.setText(</span><span class="s3">&quot;- &quot;</span><span class="s1">+producto.getOferta()+</span><span class="s3">&quot; %&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">holder.b_ver.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                <span class="s1">Dialog_product_tienda dialog_product = </span><span class="s0">new </span><span class="s1">Dialog_product_tienda(globalContext</span><span class="s0">, </span><span class="s1">producto)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">holder.b_eliminar.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                <span class="s1">Dialog_eliminar dialog_product = </span><span class="s0">new </span><span class="s1">Dialog_eliminar(globalContext</span><span class="s0">, </span><span class="s1">producto)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">holder.b_editar.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                <span class="s1">Dialog_editar dialog_product = </span><span class="s0">new </span><span class="s1">Dialog_editar(globalContext</span><span class="s0">, </span><span class="s1">producto)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public int </span><span class="s1">getItemCount() {</span>
+        <span class="s0">return </span><span class="s1">listaProductos.size()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public class </span><span class="s1">ViewHolderDatosTienda </span><span class="s0">extends </span><span class="s1">RecyclerView.ViewHolder {</span>
+        <span class="s1">ImageView imagenProducto</span><span class="s0">;</span>
+        <span class="s1">TextView nombreProducto</span><span class="s0">, </span><span class="s1">valorProducto</span><span class="s0">, </span><span class="s1">ofertaProducto</span><span class="s0">, </span><span class="s1">tipoProducto</span><span class="s0">;</span>
+        <span class="s1">Button b_ver</span><span class="s0">, </span><span class="s1">b_editar</span><span class="s0">, </span><span class="s1">b_eliminar</span><span class="s0">;</span>
+
+        <span class="s0">public </span><span class="s1">ViewHolderDatosTienda(@NonNull View itemView) {</span>
+            <span class="s0">super</span><span class="s1">(itemView)</span><span class="s0">;</span>
+            <span class="s1">imagenProducto= (ImageView) itemView.findViewById(R.id.imagen_producto)</span><span class="s0">;</span>
+            <span class="s1">nombreProducto= (TextView) itemView.findViewById(R.id.nombre_producto)</span><span class="s0">;</span>
+            <span class="s1">valorProducto= (TextView) itemView.findViewById(R.id.precio_producto)</span><span class="s0">;</span>
+            <span class="s1">ofertaProducto= (TextView) itemView.findViewById(R.id.oferta_producto)</span><span class="s0">;</span>
+            <span class="s1">tipoProducto =(TextView) itemView.findViewById(R.id.tipo_product)</span><span class="s0">;</span>
+            <span class="s1">b_editar = (Button) itemView.findViewById(R.id.btn_editar)</span><span class="s0">;</span>
+            <span class="s1">b_eliminar =(Button) itemView.findViewById(R.id.btn_eliminar)</span><span class="s0">;</span>
+            <span class="s1">b_ver = (Button) itemView.findViewById(R.id.btn_ver)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

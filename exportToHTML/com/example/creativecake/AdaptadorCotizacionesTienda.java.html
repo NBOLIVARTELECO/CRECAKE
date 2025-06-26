@@ -1,0 +1,95 @@
+<html>
+<head>
+<title>AdaptadorCotizacionesTienda.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+AdaptadorCotizacionesTienda.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.creativecake</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.content.Context</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.LayoutInflater</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.ViewGroup</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.TextView</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.annotation.NonNull</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.cardview.widget.CardView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.recyclerview.widget.RecyclerView</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.squareup.picasso.Picasso</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.util.ArrayList</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">AdaptadorCotizacionesTienda </span><span class="s0">extends </span><span class="s1">RecyclerView.Adapter&lt;AdaptadorCotizacionesTienda.CotizacionviewHolder&gt;{</span>
+    <span class="s1">ArrayList&lt;CotizacionHelperClass&gt; listaProductos</span><span class="s0">;</span>
+    <span class="s1">Context globalContext</span><span class="s0">;</span>
+    <span class="s1">String telefono</span><span class="s0">;</span>
+
+    <span class="s0">public </span><span class="s1">AdaptadorCotizacionesTienda(ArrayList&lt;CotizacionHelperClass&gt; listaProductos</span><span class="s0">, </span><span class="s1">Context globalContext</span><span class="s0">, </span><span class="s1">String telefono) {</span>
+        <span class="s0">this</span><span class="s1">.listaProductos = listaProductos</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.globalContext = globalContext</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.telefono = telefono</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@NonNull</span>
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">CotizacionviewHolder onCreateViewHolder(@NonNull ViewGroup parent</span><span class="s0">, int </span><span class="s1">viewType) {</span>
+        <span class="s1">View vista= LayoutInflater.from(parent.getContext()).inflate(R.layout.p_ejemplo_cotizaciones</span><span class="s0">,</span><span class="s1">parent</span><span class="s0">,false</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s0">return new </span><span class="s1">CotizacionviewHolder(vista)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onBindViewHolder(@NonNull CotizacionviewHolder holder</span><span class="s0">, int </span><span class="s1">position) {</span>
+        <span class="s0">final </span><span class="s1">CotizacionHelperClass producto = listaProductos.get(position)</span><span class="s0">;</span>
+
+        <span class="s1">holder.nombreCotizacion.setText(producto.getNombre())</span><span class="s0">;</span>
+        <span class="s1">holder.celularCliente.setText(producto.getNumeroCliente())</span><span class="s0">;</span>
+        <span class="s1">holder.descripcionCotizacion.setText(producto.getEspecificaciones())</span><span class="s0">;</span>
+        <span class="s1">holder.fechaEntrega.setText(producto.getFecha())</span><span class="s0">;</span>
+        <span class="s1">holder.horaEntrega.setText(producto.getHora())</span><span class="s0">;</span>
+        <span class="s1">holder.nombreCliente.setText(producto.getNombreCliente())</span><span class="s0">;</span>
+
+        <span class="s1">holder.card.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                <span class="s1">Dialog_detalles dialog_product = </span><span class="s0">new </span><span class="s1">Dialog_detalles(producto</span><span class="s0">, </span><span class="s1">SharedPreferences_Util.getPhone_SP(globalContext)</span><span class="s0">, </span><span class="s1">globalContext)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public int </span><span class="s1">getItemCount() {</span>
+        <span class="s0">return </span><span class="s1">listaProductos.size()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public  class  </span><span class="s1">CotizacionviewHolder </span><span class="s0">extends </span><span class="s1">RecyclerView.ViewHolder {</span>
+
+        <span class="s1">CardView card</span><span class="s0">;</span>
+        <span class="s1">TextView nombreCotizacion</span><span class="s0">, </span><span class="s1">nombreCliente</span><span class="s0">,</span><span class="s1">celularCliente</span><span class="s0">,</span><span class="s1">horaEntrega</span><span class="s0">,</span><span class="s1">fechaEntrega</span><span class="s0">,</span><span class="s1">descripcionCotizacion</span><span class="s0">;</span>
+
+        <span class="s0">public </span><span class="s1">CotizacionviewHolder(@NonNull View itemView) {</span>
+            <span class="s0">super</span><span class="s1">(itemView)</span><span class="s0">;</span>
+
+            <span class="s1">card =  (CardView) itemView.findViewById(R.id.Card_cotizacion)</span><span class="s0">;</span>
+            <span class="s1">nombreCotizacion= (TextView) itemView.findViewById(R.id.nombre_CotizacionT)</span><span class="s0">;</span>
+            <span class="s1">nombreCliente= (TextView) itemView.findViewById(R.id.nombre_ClienteT)</span><span class="s0">;</span>
+            <span class="s1">celularCliente= (TextView) itemView.findViewById(R.id.celular_ClienteT)</span><span class="s0">;</span>
+            <span class="s1">horaEntrega= (TextView) itemView.findViewById(R.id.hora_PedidoT)</span><span class="s0">;</span>
+            <span class="s1">fechaEntrega = (TextView) itemView.findViewById(R.id.fecha_pedidoT)</span><span class="s0">;</span>
+            <span class="s1">descripcionCotizacion= (TextView) itemView.findViewById(R.id.descripcion_CotizacionT)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

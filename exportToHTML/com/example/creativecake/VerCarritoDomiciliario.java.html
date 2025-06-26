@@ -1,0 +1,128 @@
+<html>
+<head>
+<title>VerCarritoDomiciliario.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #808080;}
+.s3 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+VerCarritoDomiciliario.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.creativecake</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.content.Context</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.Intent</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.annotation.NonNull</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.annotation.Nullable</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.fragment.app.Fragment</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.fragment.app.FragmentResultListener</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.recyclerview.widget.LinearLayoutManager</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.recyclerview.widget.RecyclerView</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.view.LayoutInflater</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.ViewGroup</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Button</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.CheckBox</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.EditText</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.TextView</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DataSnapshot</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DatabaseError</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DatabaseReference</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.FirebaseDatabase</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.ValueEventListener</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">org.w3c.dom.Text</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.util.ArrayList</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">VerCarritoDomiciliario </span><span class="s0">extends </span><span class="s1">Fragment {</span>
+
+    <span class="s1">View v</span><span class="s0">;</span>
+    <span class="s1">TextView nombre_user</span><span class="s0">;</span>
+    <span class="s1">Button agregar_carrito</span><span class="s0">;</span>
+    <span class="s1">AdaptadorCarritoDomiciliario adapterDomiciliario</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">RecyclerView recycler_pedidos</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">ArrayList&lt;Pedido&gt; listaDel_carrito</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">DatabaseReference pedidosCarrito</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">Context globalContext = </span><span class="s0">null;</span>
+
+    <span class="s0">public </span><span class="s1">VerCarritoDomiciliario() {</span>
+        <span class="s2">// Required empty public constructor</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onCreate(Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onCreate(savedInstanceState)</span><span class="s0">;</span>
+
+        <span class="s1">globalContext = </span><span class="s0">this</span><span class="s1">.getActivity()</span><span class="s0">;</span>
+
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">View onCreateView(LayoutInflater inflater</span><span class="s0">, </span><span class="s1">ViewGroup container</span><span class="s0">,</span>
+                             <span class="s1">Bundle savedInstanceState) {</span>
+        <span class="s2">// Inflate the layout for this fragment</span>
+        <span class="s1">View view = inflater.inflate(R.layout.fragment_ver_carrito_domiciliario</span><span class="s0">, </span><span class="s1">container</span><span class="s0">, false</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s0">return </span><span class="s1">view</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onViewCreated(@NonNull View view</span><span class="s0">, </span><span class="s1">@Nullable Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onViewCreated(view</span><span class="s0">, </span><span class="s1">savedInstanceState)</span><span class="s0">;</span>
+
+        <span class="s0">this</span><span class="s1">.v =view</span><span class="s0">;</span>
+
+        <span class="s1">inicializar()</span><span class="s0">;</span>
+        <span class="s1">getParentFragmentManager().setFragmentResultListener(</span><span class="s3">&quot;key&quot;</span><span class="s0">, this, new </span><span class="s1">FragmentResultListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onFragmentResult(@NonNull String requestKey</span><span class="s0">, </span><span class="s1">@NonNull Bundle result) {</span>
+
+                <span class="s1">nombre_user.setText(result.getString(</span><span class="s3">&quot;nom_user&quot;</span><span class="s1">))</span><span class="s0">;</span>
+
+                <span class="s1">pedidosCarrito= FirebaseDatabase.getInstance().getReference().getRoot().child(</span><span class="s3">&quot;carrito&quot;</span><span class="s1">).child(result.getString(</span><span class="s3">&quot;telefono&quot;</span><span class="s1">))</span><span class="s0">;</span>
+                <span class="s1">pedidosCarrito.addValueEventListener(</span><span class="s0">new </span><span class="s1">ValueEventListener() {</span>
+                    <span class="s1">@Override</span>
+                    <span class="s0">public void </span><span class="s1">onDataChange(@NonNull DataSnapshot snapshot) {</span>
+                        <span class="s1">listaDel_carrito.removeAll(listaDel_carrito)</span><span class="s0">;</span>
+                        <span class="s0">for </span><span class="s1">(DataSnapshot ds: snapshot.getChildren()) {</span>
+                            <span class="s0">if</span><span class="s1">(!ds.child(</span><span class="s3">&quot;imagen&quot;</span><span class="s1">).getValue().equals(</span><span class="s3">&quot; &quot;</span><span class="s1">)) {</span>
+                                <span class="s1">Pedido producto = ds.getValue(Pedido.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                                <span class="s1">listaDel_carrito.add(producto)</span><span class="s0">;</span>
+                            <span class="s1">}</span>
+                        <span class="s1">}</span>
+                        <span class="s1">adapterDomiciliario.notifyDataSetChanged()</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+
+                    <span class="s1">@Override</span>
+                    <span class="s0">public void </span><span class="s1">onCancelled(@NonNull DatabaseError error) {</span>
+
+                    <span class="s1">}</span>
+                <span class="s1">})</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">inicializar() {</span>
+
+        <span class="s1">nombre_user = (TextView) v.findViewById(R.id.nom_user)</span><span class="s0">;</span>
+        <span class="s1">recycler_pedidos = (RecyclerView) v.findViewById(R.id.recyclerPedido)</span><span class="s0">;</span>
+        <span class="s1">recycler_pedidos.setLayoutManager(</span><span class="s0">new </span><span class="s1">LinearLayoutManager(getContext()))</span><span class="s0">;</span>
+        <span class="s1">listaDel_carrito = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span>
+        <span class="s1">adapterDomiciliario = </span><span class="s0">new </span><span class="s1">AdaptadorCarritoDomiciliario(listaDel_carrito</span><span class="s0">, </span><span class="s1">globalContext)</span><span class="s0">;</span>
+        <span class="s1">recycler_pedidos.setAdapter(adapterDomiciliario)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span></pre>
+</body>
+</html>
